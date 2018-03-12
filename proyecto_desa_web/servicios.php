@@ -28,6 +28,9 @@ if ($data = $_POST) {
         case "logOut":
             logout();
             break;
+        case "eliminarArchivo":
+            eliminarArchivo($data);
+            break;
         default:
             break;
     }
@@ -298,6 +301,19 @@ function FileSizeConvert($bytes) {
     return $result;
 }
 
+function eliminarArchivo($data) {
+    if (isset($data['ruta_archivo'])) {
+            $archivo = $_POST['ruta_archivo'];
+            unlink($archivo);
+            echo $archivo;
+             $_SESSION['success_msg'] = "Archivo eliminado.";
+        }else{
+             $_SESSION['error_msg'] = "El archivo no pudo ser eliminado.";
+        }
+       // header("Location: " . getBaseUrl() . "vistas/home.php");
+       // header('Location: ../vistas/home.php');
+}
+
 function getFiles_HTML($directorio) {
     // echo getHost();
     $path = '../storage/' . $directorio . '/';
@@ -307,13 +323,16 @@ function getFiles_HTML($directorio) {
         while (false !== ($file = readdir($handle))) {
             if ($file !== '.' || $file !== '..') {
                 $cadena .= '<tr>';
-                $cadena .= "<form action='eliminar.php' method='POST'>";
-                $peso = FileSizeConvert(filesize($path . $file)); //KB
+                $cadena .= "<form action='../servicios.php' method='POST'>";
+                $peso = FileSizeConvert(filesize($path . $file));
                 $cadena .= '<td>' . $file . '</td>';
-                $cadena .= '<td>' . $peso . '</td>';
-                $cadena .= '<td></td>';
-                $cadena .= '<td></td>';
-                $cadena .= '<td><input type="submit" value="Eliminar" name="submit"></td>';
+                $cadena .= '<td><button type="submit" name="submit"><img src="../images/busqueda.png">Detalles</button></td>';
+                $cadena .= '<td><button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
+                $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
+                $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />'.
+                        '<input type="hidden" name="ruta_archivo" value="storage/'.$directorio.'/'.$file.'"/>'
+                        . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
+
                 $cadena .= '</form>';
                 $cadena .= '</tr>';
             }

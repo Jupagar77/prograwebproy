@@ -99,12 +99,7 @@ include ("../servicios.php");
                         <thead>
                             <tr>
                                 <!--archivo($fecha, $tamano, $descripcion, $clasificacion,$autor)-->
-                                <th>Nombre</th>
-                                <th>Peso</th>
-                                <th>Clasificación</th>
-                                <th>Autor</th>
-                                <th>Fecha creación</th>
-                                <th>Por definir</th>                                
+                                <th colspan="5">Administrador de Archivos</th>                              
                             </tr>
                         </thead>
                         <tbody>                      
@@ -119,10 +114,10 @@ include ("../servicios.php");
                                 <input type="hidden" name="metodo" value="logOut" />
                                 Agregar nuevo:
                             </td>
-                            <td>
+                            <td colspan="2">
                                 <input type="file" name="userfile" id="fileToUpload" value="Cargar">
                             </td>
-                            <td>
+                            <td colspan="1">
                                 <label for="categoria">Categoría</label>
                                 <select id="categoria">
                                     <option value="volvo">Comedia</option>
@@ -133,8 +128,6 @@ include ("../servicios.php");
 
                                 </select>
                             </td>
-                            <td></td>
-                            <td></td>
                             <td>
                                 <input type="submit" name="submit" value="Agregar" id="submit"
                                        class="btn btn-primary btn-block btn-flat btn-sm">
@@ -143,8 +136,6 @@ include ("../servicios.php");
                         </form>
 
                         </tr>
-
-
 
                         </tbody>
                     </table>

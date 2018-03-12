@@ -76,3 +76,11 @@ function obetener_vector_archivo($file, $split) {
     }
     return $VEC1;
 }
+
+
+function guardar_archivo($file, $file_idx, $file_line, $archivo) {
+    file_put_contents($file, $archivo->toString(), FILE_APPEND | LOCK_EX);
+    //guardar indice
+    $n_car = strlen(utf8_decode($archivo->toString()));
+    guardar_indice_usuario($file_idx, $file_line, $usuario->getNombre(), $n_car);
+}
