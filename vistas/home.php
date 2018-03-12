@@ -1,12 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: juan
- * Date: 11/03/18
- * Time: 05:34 PM
- */
+
 
 include ("../servicios.php");
+
+/*
 session_start();
 if(!$_SESSION['login']){
     header( "Location: " . getBaseUrl() . "index.php" );
@@ -25,7 +22,7 @@ if($_SESSION['error_msg']){
 }
 
 $name = mostrarUsuario($_SESSION['login_id']);
-
+*/
 ?>
 
 <!doctype html>

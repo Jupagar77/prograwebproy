@@ -1,18 +1,18 @@
 <?php
 include ("servicios.php");
-session_start();
-if($_SESSION['login']){
+//session_start();
+if(isset($_SESSION['login'])){
     header( "Location: " . getBaseUrl() . "vistas/home.php" );
 }
 
 $success_message = NULL;
-if($_SESSION['success_msg']){
+if(isset($_SESSION['success_msg'])){
     $success_message = $_SESSION['success_msg'];
     $_SESSION['success_msg'] = NULL;
 }
 
 $error_message = NULL;
-if($_SESSION['error_msg']){
+if(isset($_SESSION['error_msg'])){
     $error_message = $_SESSION['error_msg'];
     $_SESSION['error_msg'] = NULL;
 }
@@ -61,7 +61,7 @@ if($_SESSION['error_msg']){
                     src="images/mp4.png" alt="My Ad Cubes"></a>
     </div><!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Inicia sesion para acceder a tus datos</p>
+        <p class="login-box-msg">Inicia sesion para acceder a tus archivos</p>
         <form action="servicios.php" method="post" accept-charset="utf-8">
             <input type="hidden" name="metodo" value="iniciarSesion" />
             <div class="form-group has-feedback">
