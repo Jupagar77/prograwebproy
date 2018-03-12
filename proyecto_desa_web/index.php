@@ -42,6 +42,11 @@ if (isset($_SESSION['error_msg'])) {
     </head>
     <body>
 
+        <header>
+            <nav>
+                
+            </nav>
+        </header>
         <?php if (isset($error_message)): ?>
             <div class="errorMsg">
                 <?php echo $error_message ?>
@@ -88,7 +93,9 @@ if (isset($_SESSION['error_msg'])) {
 
             </div><!-- /.login-box-body -->
         </div>
-
+        <footer>
+            
+        </footer>
 
     </body>
 </html>

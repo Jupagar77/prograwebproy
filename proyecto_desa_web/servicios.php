@@ -25,7 +25,11 @@ if ($data = $_POST) {
         case "iniciarSesion":
             iniciarSesion($data);
             break;
-        default: break;
+        case "logOut":
+            logout();
+            break;
+        default:
+            break;
     }
 } else {
     if ($data = $_GET) {
@@ -51,7 +55,7 @@ function iniciarSesion($data) {
             $_SESSION['user_email'] = $data['email'];
             $_SESSION['login_id'] = $data['email'];
             $_SESSION['success_msg'] = "Inicio de sesion correcto!";
-            
+
             header("Location: " . getBaseUrl() . "vistas/home.php");
         } else {
             $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
@@ -243,4 +247,78 @@ function getBaseUrl() {
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
     // return: http://localhost/myproject/
     return $protocol . '://' . $hostName . $pathInfo['dirname'] . "/";
+}
+
+function getHost() {
+    // output: /myproject/index.php
+    $currentPath = $_SERVER['PHP_SELF'];
+    // output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index )
+    $pathInfo = pathinfo($currentPath);
+    // output: localhost
+    $hostName = $_SERVER['HTTP_HOST'];
+    // output: http://
+    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
+    // return: http://localhost/
+    return $protocol . '://' . $hostName . "/";
+}
+
+function FileSizeConvert($bytes) {
+    $result = '';
+    $bytes = floatval($bytes);
+    $arBytes = array(
+        0 => array(
+            "UNIT" => "TB",
+            "VALUE" => pow(1024, 4)
+        ),
+        1 => array(
+            "UNIT" => "GB",
+            "VALUE" => pow(1024, 3)
+        ),
+        2 => array(
+            "UNIT" => "MB",
+            "VALUE" => pow(1024, 2)
+        ),
+        3 => array(
+            "UNIT" => "KB",
+            "VALUE" => 1024
+        ),
+        4 => array(
+            "UNIT" => "B",
+            "VALUE" => 1
+        ),
+    );
+
+    foreach ($arBytes as $arItem) {
+        if ($bytes >= $arItem["VALUE"]) {
+            $result = $bytes / $arItem["VALUE"];
+            $result = str_replace(".", ",", strval(round($result, 2))) . " " . $arItem["UNIT"];
+            break;
+        }
+    }
+    return $result;
+}
+
+function getFiles_HTML($directorio) {
+    // echo getHost();
+    $path = '../storage/' . $directorio . '/';
+    $handle = opendir($path);
+    $cadena = '';
+    if ($handle) {
+        while (false !== ($file = readdir($handle))) {
+            if ($file !== '.' || $file !== '..') {
+                $cadena .= '<tr>';
+                $cadena .= "<form action='eliminar.php' method='POST'>";
+                $peso = FileSizeConvert(filesize($path . $file)); //KB
+                $cadena .= '<td>' . $file . '</td>';
+                $cadena .= '<td>' . $peso . '</td>';
+                $cadena .= '<td></td>';
+                $cadena .= '<td></td>';
+                $cadena .= '<td><input type="submit" value="Eliminar" name="submit"></td>';
+                $cadena .= '</form>';
+                $cadena .= '</tr>';
+            }
+        }
+        closedir($handle);
+    }
+    return $cadena;
 }

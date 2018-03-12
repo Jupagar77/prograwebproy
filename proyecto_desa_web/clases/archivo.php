@@ -1,13 +1,13 @@
 <?php
 
-class contacto {
+class archivo {
     private $fecha;
     private $tamano;
     private $descripcion;
     private $clasificacion;
     private $autor;
     
-    function contacto($fecha, $tamano, $descripcion, $clasificacion,$autor) {
+    function archivo($fecha, $tamano, $descripcion, $clasificacion,$autor) {
         $this->autor=$autor;
         $this->feha = $fecha;
         $this->tamano = $tamano;
