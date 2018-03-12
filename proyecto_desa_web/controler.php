@@ -77,6 +77,31 @@ function obetener_vector_archivo($file, $split) {
     return $VEC1;
 }
 
+function buscar_elemento($fichero, $n_linea, $tam) {
+    echo $n_linea.'- '.$tam;
+    $fp = fopen($fichero, 'r');
+    fseek($fp, $n_linea);
+    $data = fgets($fp, $tam);
+    return $data;
+}
+
+function buscar_detalle($linea, $tam) {
+    echo generarHTML(buscar_elemento('contacto2.txt', $linea, $tam));
+}
+//GERSON VARGAS GALVEZ,72,0,1
+
+function generarHTML($val){
+    $vec=explode('*', $val);
+    $detalle = '<div>';
+    $detalle = '<h2>'.'Usuario buscado: '.'</h2>';
+    $detalle.='<b> Name '.$vec[0].'</b>';
+    $detalle.='<p> <b>Work:</b> '.$vec[1].'</p>';
+    $detalle.='<p><b> Mobile:</b> '.$vec[2].'</p>';
+    $detalle.='<p> <b>Email:</b> '.$vec[3].'</p>';
+    $detalle.='<p> <b>Address:</b> '.$vec[4].'</p>';
+    $detalle.='</div>';
+    return $detalle;
+}
 
 function guardar_archivo($file, $file_idx, $file_line, $archivo) {
     file_put_contents($file, $archivo->toString(), FILE_APPEND | LOCK_EX);

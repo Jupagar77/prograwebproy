@@ -31,6 +31,10 @@ if ($data = $_POST) {
         case "eliminarArchivo":
             eliminarArchivo($data);
             break;
+        case "descargarArchivo":
+            descargarArchivo($data);
+            break;
+
         default:
             break;
     }
@@ -303,15 +307,27 @@ function FileSizeConvert($bytes) {
 
 function eliminarArchivo($data) {
     if (isset($data['ruta_archivo'])) {
-            $archivo = $_POST['ruta_archivo'];
-            unlink($archivo);
-            echo $archivo;
-             $_SESSION['success_msg'] = "Archivo eliminado.";
-        }else{
-             $_SESSION['error_msg'] = "El archivo no pudo ser eliminado.";
-        }
-       // header("Location: " . getBaseUrl() . "vistas/home.php");
-       // header('Location: ../vistas/home.php');
+        $archivo = $_POST['ruta_archivo'];
+        unlink($archivo);
+        echo $archivo;
+        $_SESSION['success_msg'] = "Archivo eliminado.";
+    } else {
+        $_SESSION['error_msg'] = "El archivo no pudo ser eliminado.";
+    }
+    // header("Location: " . getBaseUrl() . "vistas/home.php");
+    // header('Location: ../vistas/home.php');
+}
+
+function descargarArchivo($data) {
+    if (isset($data['ruta_archivo'])) {
+        $archivo = $_POST['ruta_archivo'];
+        echo $archivo;
+        header("Location: " . $archivo);
+    } else {
+        $_SESSION['error_msg'] = "El archivo no se puede descargar.";
+    }
+    // header("Location: " . getBaseUrl() . "vistas/home.php");
+    // header('Location: ../vistas/home.php');
 }
 
 function getFiles_HTML($directorio) {
@@ -323,17 +339,27 @@ function getFiles_HTML($directorio) {
         while (false !== ($file = readdir($handle))) {
             if ($file !== '.' || $file !== '..') {
                 $cadena .= '<tr>';
-                $cadena .= "<form action='../servicios.php' method='POST'>";
+
                 $peso = FileSizeConvert(filesize($path . $file));
                 $cadena .= '<td>' . $file . '</td>';
                 $cadena .= '<td><button type="submit" name="submit"><img src="../images/busqueda.png">Detalles</button></td>';
-                $cadena .= '<td><button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
-                $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
-                $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />'.
-                        '<input type="hidden" name="ruta_archivo" value="storage/'.$directorio.'/'.$file.'"/>'
-                        . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
 
+                $cadena .= "<form action='../servicios.php' method='POST'>";
+                $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
+                        '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'prograwebproy/proyecto_desa_web/storage/' . $directorio . '/' . $file . '"/>'
+                        . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
                 $cadena .= '</form>';
+
+                $cadena .= "<form action='../servicios.php' method='POST'>";
+                $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
+                $cadena .= '</form>';
+
+                $cadena .= "<form action='../servicios.php' method='POST'>";
+                $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />' .
+                        '<input type="hidden" name="ruta_archivo" value="storage/' . $directorio . '/' . $file . '"/>'
+                        . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
+                $cadena .= '</form>';
+
                 $cadena .= '</tr>';
             }
         }
