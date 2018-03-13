@@ -59,15 +59,16 @@ function iniciarSesion($data) {
     if (isset($data['email']) && isset($data['password'])) {
         $vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
         if (login($data['email'], $data["password"], $vector_usuarios)) {
+       
             $_SESSION['login'] = true;
             $_SESSION['user_email'] = $data['email'];
             $_SESSION['login_id'] = $data['email'];
             $_SESSION['success_msg'] = "Inicio de sesion correcto!";
            
-            header("Location: " . getBaseUrl() . "vistas/home.php");
+           header("Location: " . getBaseUrl() . "vistas/home.php");
         } else {
            $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
-            header("Location: " . getBaseUrl() . "index.php");
+           header("Location: " . getBaseUrl() . "index.php");
         }
     }
 //    if ($access_log) {

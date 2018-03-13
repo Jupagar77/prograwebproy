@@ -71,7 +71,8 @@ function existe_usuario($email,$user_name, $vector_usuarios) {
 
 function validar_usuario($usuario, $passwd, $vector_usuarios) {
     for ($i = 0; $i < count($vector_usuarios); $i++) {
-        if ($usuario === $vector_usuarios[$i]->getEmail() ||$usuario === $vector_usuarios[$i]->getNombre() && $passwd === $vector_usuarios[$i]->getPassword()) {
+        if (($usuario === $vector_usuarios[$i]->getEmail() || $usuario === $vector_usuarios[$i]->getNombre()) && $passwd === $vector_usuarios[$i]->getPassword()) {
+        
             return true;
         }
     }
