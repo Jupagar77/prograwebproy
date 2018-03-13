@@ -15,7 +15,7 @@ class archivo {
         $this->clasificacion = $clasificacion;
     }
     function toString(){
-        $cadena=$this->fecha."*".$this->tamano."*".$this->descripcion."*".$this->clasificacion."\n";
+        $cadena=$this->autor."*".$this->fecha."*".$this->tamano."*".$this->descripcion."*".$this->clasificacion."\n";
         return $cadena; 
     }
     function getFecha() {

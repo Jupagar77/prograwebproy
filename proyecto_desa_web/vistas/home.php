@@ -1,25 +1,23 @@
 <?php
 include ("../servicios.php");
 
+if (!isset($_SESSION['login'])) {
+    header("Location: " . getBaseUrl() . "../index.php");
+}
 
-//session_start();
-//if (!isset($_SESSION['login'])) {
-//    header("Location: " . getBaseUrl() . "../index.php");
-//}
-//
-//$success_message = NULL;
-//if (isset($_SESSION['success_msg'])) {
-//    $success_message = $_SESSION['success_msg'];
-//    $_SESSION['success_msg'] = NULL;
-//}
-//
-//$error_message = NULL;
-//if (isset($_SESSION['error_msg'])) {
-//    $error_message = $_SESSION['error_msg'];
-//    $_SESSION['error_msg'] = NULL;
-//}
-//
-//$name = mostrarUsuario($_SESSION['login_id']);
+$success_message = NULL;
+if (isset($_SESSION['success_msg'])) {
+    $success_message = $_SESSION['success_msg'];
+    $_SESSION['success_msg'] = NULL;
+}
+
+$error_message = NULL;
+if (isset($_SESSION['error_msg'])) {
+    $error_message = $_SESSION['error_msg'];
+    $_SESSION['error_msg'] = NULL;
+}
+
+$name = mostrarUsuario($_SESSION['login_id']);
 ?>
 
 <!doctype html>

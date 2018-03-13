@@ -43,7 +43,7 @@
                   method="post" id="contacto">
                 <input type="hidden" name="metodo" value="agregarUsuario" />
                 <div class="form-group">
-                    <label for="nombre">Nombre</label>
+                    <label for="nombre">Nombre de usuario</label>
                     <input maxlength="30" type="text" class="form-control" name="nombre" id="nombre">
                 </div>
 

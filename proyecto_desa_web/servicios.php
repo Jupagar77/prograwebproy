@@ -11,33 +11,34 @@ $file_user_line = 'archivos/line_user.txt';
 $split = '*';
 
 
-if ($data = $_POST) {
-    switch ($data['metodo']) {
-        case "agregarUsuario":
-            agregarUsuario($data);
-            break;
-        case "borrarUsuario":
-            borrarUsuario($data);
-            break;
-        case "mostrarUsuario":
-            mostrarUsuario($data);
-            break;
-        case "iniciarSesion":
-            iniciarSesion($data);
-            break;
-        case "logOut":
-            logout();
-            break;
-        case "eliminarArchivo":
-            eliminarArchivo($data);
-            break;
-        case "descargarArchivo":
-            descargarArchivo($data);
-            break;
+if($data = $_POST){
+switch ($data['metodo']) {
+    case "agregarUsuario":
+        agregarUsuario($data);
+        break;
+    case "borrarUsuario":
+        borrarUsuario($data);
+        break;
+    case "mostrarUsuario":
+        mostrarUsuario($data);
+        break;
+    case "iniciarSesion":
+        iniciarSesion($data);
+        break;
+    case "logOut":
+        logout();
+        break;
+    case "eliminarArchivo":
+        eliminarArchivo($data);
+        break;
+    case "descargarArchivo":
+        descargarArchivo($data);
+        break;
 
-        default:
+    default:
             break;
     }
+
 } else {
     if ($data = $_GET) {
         switch ($data['metodo']) {
@@ -56,16 +57,16 @@ function iniciarSesion($data) {
     //$access_log = fopen($filename, "r");
 
     if (isset($data['email']) && isset($data['password'])) {
-        $vector_usuarios = obetener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
+        $vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
         if (login($data['email'], $data["password"], $vector_usuarios)) {
             $_SESSION['login'] = true;
             $_SESSION['user_email'] = $data['email'];
             $_SESSION['login_id'] = $data['email'];
             $_SESSION['success_msg'] = "Inicio de sesion correcto!";
-
+           
             header("Location: " . getBaseUrl() . "vistas/home.php");
         } else {
-            $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
+           $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
             header("Location: " . getBaseUrl() . "index.php");
         }
     }
@@ -112,10 +113,17 @@ function iniciarSesion($data) {
 
 function agregarUsuario($data) {
     if (isset($data["nombre"]) && $data["trabajo"] && $data["celular"] && $data["email"] && $data["direccion"] && $data["password"]) {
-        $usuario = new usuario($data["nombre"], $data["trabajo"], $data["celular"], $data["email"], $data["direccion"], $data["password"]);
-        guardar_usuario($GLOBALS['file_users'], $GLOBALS['file_users_idx'], $GLOBALS['file_user_line'], $usuario);
-        $_SESSION['success_msg'] = "El usuario ha sido agregado, inicie sesión!";
-        header("Location: " . getBaseUrl() . "index.php");
+        $vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
+
+        // var_dump($vector_usuarios);
+        if (!existe_usuario($data["email"],$data["nombre"], $vector_usuarios)) { //si no existe el usuario, se debe agregar
+            $usuario = new usuario($data["nombre"], $data["trabajo"], $data["celular"], $data["email"], $data["direccion"], $data["password"]);
+            guardar_usuario($GLOBALS['file_users'], $GLOBALS['file_users_idx'], $GLOBALS['file_user_line'], $usuario);
+            $_SESSION['success_msg'] = "El usuario ha sido agregado, inicie sesión!";
+            // header("Location: " . getBaseUrl() . "index.php");
+        } else {
+            $_SESSION['error_msg'] = "El usuario ya  está registrado.";
+        }
     } else {
         $_SESSION['error_msg'] = "El usuario no ha sido agregado.";
     }

@@ -70,7 +70,7 @@ if (isset($_SESSION['error_msg'])) {
                 <form action="servicios.php" method="post" accept-charset="utf-8">
                     <input type="hidden" name="metodo" value="iniciarSesion" />
                     <div class="form-group has-feedback">
-                        <input type="email" name="email" value="" placeholder="Email" class="form-control" id="login"
+                        <input type="text" name="email" value="" placeholder="Email o usuario" class="form-control" id="login"
                                maxlength="80" size="30"> <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
