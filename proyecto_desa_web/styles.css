@@ -7,15 +7,19 @@
     font-weight: 300;
     src: local('Dosis Light'), local('Dosis-Light'), url(http://fonts.gstatic.com/l/font?kit=RoNoOKoxvxVq4Mi9I4xIReCW9eLPAnScftSvRB4WBxg&skey=a88ea9d907460694) format('woff2');
 }
+
 @font-face {
     font-family: 'Dosis';
     font-style: normal;
     font-weight: 500;
     src: local('Dosis Medium'), local('Dosis-Medium'), url(http://fonts.gstatic.com/l/font?kit=Z1ETVwepOmEGkbaFPefd_-CW9eLPAnScftSvRB4WBxg&skey=21884fc543bb1165) format('woff2');
 }
+
+* {
+    font-family: 'Arial', sans-serif;
+}
+
 body {
-    font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif,  Open Sans;
-    font-size: 14px;
     line-height: 1.42857;
     height: 330px;
     padding: 0;
@@ -27,6 +31,7 @@ body {
     overflow-y: auto;
 
 }
+
 header{
     background-color: #333333;
     border-top: 0px;
@@ -37,12 +42,13 @@ header{
     border: 2px;
     border-style: groove;
 }
+
 header h1{
     text-align: center;
     padding-top: 10px;
     color: #999999;
-    font-size: 21px;
 }
+
 .imglogo{
     float:left;
     margin-top: 10px;
@@ -53,11 +59,12 @@ header h1{
     border-style: groove;
 
 }
+
 nav{
     float: right;
 }
+
 .username{
-    font-size: 14px;
     color: blue;
     border-radius: 12px;
     border: 2px;
@@ -65,36 +72,32 @@ nav{
     margin: 10px;
     float: right;
 }
+
 nav ul li{
     display: inline-block;
     margin-right: 40px;
 
 }
+
 nav ul li a{
     margin: 8px;
-    font-size: 1.2em;
 }
-.btn {
-    border-radius: 8px;
-    border: 2px;
-    border-style: solid;
 
-}
-.btnsesion {
+
+.btnsesion, .btnregistrar{
     background-color: green;
     text-align: left;
     width: 138px;
     border-radius: 6px;
-    border: 1px solid #18ab29;
+    border: 1px solid green;
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-family: arial;
-    font-size: 17px;
     padding: 4px 19px;
     text-decoration: none;
     text-shadow: 0px 1px 29px #2f6627;
 }
+
 .btncancelar{
     background-color: red;
     text-align: left;
@@ -104,35 +107,20 @@ nav ul li a{
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-family: arial;
-    font-size: 17px;
     padding: 4px 19px;
     text-decoration: none;
     text-shadow: 0px 1px 29px #2f6627;
 }
-.btnregistrar {
-    background-color: blue;
-    text-align: left;
-    width: 100px;
-    border-radius: 6px;
-    border: 1px solid #18ab29;
-    display: inline-block;
-    cursor: pointer;
-    color: #ffffff;
-    font-family: arial;
-    font-size: 17px;
-    padding: 4px 19px;
-    text-decoration: none;
-    text-shadow: 0px 1px 29px #2f6627;
-}
-.btnregistrar:hover {
-    background-color: #247ba0;
-    color: #000000;
-}
+
 .centrar_main,aside{
-     display: flex;
+    display: flex;
     justify-content: center;
 }
+
+.centrar_main_login{
+    margin-top: 5%;
+}
+
 .form-control {
     background-color: #ffffff;
     background-image: none;
@@ -141,17 +129,12 @@ nav ul li a{
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     color: #333333;
     display: block;
-    font-size: 14px;
-    padding: 6px 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 60%;
 }
-
 
 .form-group {
     margin-bottom: 15px;
 }
-
 
 .errorMsg{
     background: darksalmon;
@@ -167,15 +150,13 @@ nav ul li a{
     margin: 10px;
 }
 
-
-
-
 table{
     text-align: center;
     border-collapse: collapse;
     border-bottom: solid 1px black;
     border-top: solid 1px black;
 }
+
 .tabladetalles{
     margin-top: 10px;
 }
@@ -185,45 +166,75 @@ th{
     border-right:solid 1px black;
     background: darkgray;
 }
+
 td{
     border-left:solid 1px black;
     border-right:solid 1px black;
 
 }
+
 tr:nth-child(even) {
    background: #FFF;
 }
+
 tr:nth-child(odd) {
      background: lightskyblue;
     
 }
+
 #last_row{
     margin: 8px;
     border-radius: 12px;
     border: 4px;
     border-style: groove;
 }
-footer{
-    margin-top: 10em;
-    background-color: #333333;
-    border-top: 0px;
-    width: 97%;
-    height: 60px;
-    margin-left: 20px;
-    border-radius: 12px;
-    border: 2px;
-    border-style: groove;
-}
-footer .pleft{
-    margin-left: 5em;
-    float:left;
-}
-footer .pright{
-    margin-right: 5em;
-    float:right;
-}
-footer .pcenter{
 
-    margin-left: 30em;
-    float:left;
+.topnav {
+    overflow: hidden;
+    background-color: black;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: chocolate;
+    color: white;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+footer .pcenter a{
+    text-decoration: none;
+    color: white;
+}
+
+.login-logo{
+    text-align: center;
+}
+
+.login-form input{
+    width: 100%;
+}
+
+.row-agregar input{
+    width: 100%;
 }

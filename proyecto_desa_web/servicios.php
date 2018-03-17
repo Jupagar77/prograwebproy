@@ -123,7 +123,7 @@ function agregarUsuario($data) {
         if (!existe_usuario($data["email"], $data["nombre"], $vector_usuarios)) { //si no existe el usuario, se debe agregar
             $usuario = new usuario($data["nombre"], $data["trabajo"], $data["celular"], $data["email"], $data["direccion"], $data["password"]);
             guardar_usuario($GLOBALS['file_users'], $GLOBALS['file_users_idx'], $GLOBALS['file_user_line'], $usuario);
-            $_SESSION['success_msg'] = "El usuario ha sido agregado, inicie sesión!";
+            $_SESSION['success_msg'] = "El usuario ha sido agregado, ya puede iniciar sesión.";
             header("Location: " . getBaseUrl() . "index.php");
         } else {
             $_SESSION['error_msg'] = "El usuario ya  está registrado.";
