@@ -32,7 +32,7 @@ body {
 
 }
 
-header{
+header {
     background-color: #333333;
     border-top: 0px;
     width: 97%;
@@ -43,28 +43,28 @@ header{
     border-style: groove;
 }
 
-header h1{
+header h1 {
     text-align: center;
     padding-top: 10px;
     color: #999999;
 }
 
-.imglogo{
-    float:left;
+.imglogo {
+    float: left;
     margin-top: 10px;
     margin-left: 150px;
-    
+
     border-radius: 12px;
     border: 2px;
     border-style: groove;
 
 }
 
-nav{
+nav {
     float: right;
 }
 
-.username{
+.username {
     color: blue;
     border-radius: 12px;
     border: 2px;
@@ -73,18 +73,17 @@ nav{
     float: right;
 }
 
-nav ul li{
+nav ul li {
     display: inline-block;
     margin-right: 40px;
 
 }
 
-nav ul li a{
+nav ul li a {
     margin: 8px;
 }
 
-
-.btnsesion, .btnregistrar{
+.btnsesion, .btnregistrar {
     background-color: green;
     text-align: left;
     width: 138px;
@@ -98,7 +97,7 @@ nav ul li a{
     text-shadow: 0px 1px 29px #2f6627;
 }
 
-.btncancelar{
+.btncancelar {
     background-color: red;
     text-align: left;
     width: 60px;
@@ -112,12 +111,17 @@ nav ul li a{
     text-shadow: 0px 1px 29px #2f6627;
 }
 
-.centrar_main,aside{
+.centrar_main {
     display: flex;
     justify-content: center;
 }
 
-.centrar_main_login{
+.centrar_main_home{
+    height: 1000px;
+    overflow: scroll;
+}
+
+.centrar_main_login {
     margin-top: 5%;
 }
 
@@ -136,57 +140,48 @@ nav ul li a{
     margin-bottom: 15px;
 }
 
-.errorMsg{
+.errorMsg {
     background: darksalmon;
     border: red solid 1px;
     color: red;
     margin: 10px;
 }
 
-.successMsg{
+.successMsg {
     background: greenyellow;
     border: green solid 1px;
     color: green;
     margin: 10px;
 }
 
-table{
+table {
     text-align: center;
     border-collapse: collapse;
-    border-bottom: solid 1px black;
-    border-top: solid 1px black;
 }
 
-.tabladetalles{
+.tabladetalles {
     margin-top: 10px;
 }
 
-th{
-    border-left:solid 1px black;
-    border-right:solid 1px black;
-    background: darkgray;
+th {
+    background: white;
+    padding: 20px;
 }
 
-td{
-    border-left:solid 1px black;
-    border-right:solid 1px black;
-
+td {
+    padding: 20px;
 }
 
 tr:nth-child(even) {
-   background: #FFF;
+    background: #FFF;
 }
 
 tr:nth-child(odd) {
-     background: lightskyblue;
-    
+    background: blanchedalmond;
 }
 
-#last_row{
+#last_row {
     margin: 8px;
-    border-radius: 12px;
-    border: 4px;
-    border-style: groove;
 }
 
 .topnav {
@@ -222,19 +217,60 @@ footer {
     text-align: center;
 }
 
-footer .pcenter a{
+footer .pcenter a {
     text-decoration: none;
     color: white;
 }
 
-.login-logo{
+.login-logo {
     text-align: center;
 }
 
-.login-form input{
+.login-form input {
     width: 100%;
 }
 
-.row-agregar input{
+.row-agregar input {
     width: 100%;
 }
+
+.acciones a{
+    text-decoration: none;
+}
+
+.styled-select {
+    background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+    height: 29px;
+    overflow: hidden;
+    width: 240px;
+}
+
+.styled-select select {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    height: 29px;
+    padding: 5px; /* If you add too much padding here, the options won't show in IE */
+    width: 268px;
+}
+
+.styled-select select option {
+    color: black;
+}
+
+.styled-select.slate {
+    background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+    height: 34px;
+    width: 240px;
+}
+
+.styled-select.slate select {
+    border: 1px solid #ccc;
+    font-size: 16px;
+    height: 34px;
+    width: 268px;
+}
+
+.blue    { background-color: #3b8ec2; }
+
+.blue select    { color: #fff; }

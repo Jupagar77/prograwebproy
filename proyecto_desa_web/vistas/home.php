@@ -27,104 +27,34 @@ $name = $_SESSION['username'];
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HOME</title>
-
+    <title>Inicio</title>
+    <link rel="shortcut icon" type="image/png" href="../images/mp4.png"/>
     <link href="../styles.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
-<header>
-    <img src="../images/mp4_main.png" class="imglogo" alt="LOGO">
-    <div class="username">
-        <i>Bienvenid@: <?php echo $name ?> !</i>
+<div class="topnav">
+    <a class="active" href="home.php">Inicio</a>
+    <a href="home.php?metodo=verPerfil">Perfil</a>
+    <a href="home.php?metodo=vereditarperfil">Editar Perfil</a>
+    <a href="">Ayuda</a>
+    <a style="float: right;" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
+</div>
+
+<?php if (isset($error_message)): ?>
+    <div class="errorMsg">
+        <?php echo $error_message ?>
     </div>
-    <h1>ADMINISTRADOR DE ARCHIVOS (.MP4)</h1>
+<?php endif; ?>
+<?php if ($success_message): ?>
+    <div class="successMsg">
+        <?php echo $success_message ?>
+    </div>
+<?php endif; ?>
 
-    <nav class="navbar navbar-inverse">
-        <ul>
-            <li>
-                <a class="btn btn-primary btn-block btn-flat" href="#">AYUDA</a>
-            </li>
-            <li>
-                <div>
-                    <form action="home.php" class="contact-edit row"
-                          method="GET">
-                        <input type="hidden" name="metodo" value="verPerfil"/>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <input type="submit" name="submit" value="Ver Perfil" id="submit"
-                                       class="btn btn-primary btn-block btn-flat">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </li>
-            <li>
-                <div>
-                    <form action="home.php" class="contact-edit row"
-                          method="POST">
-                        <input type="hidden" name="metodo" value="vereditarperfil"/>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <input type="submit" name="submit" value="Editar Perfil" id="submit"
-                                       class="btn btn-primary btn-block btn-flat">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </li>
-            <li>
-                <div>
-                    <form action="home.php" class="contact-edit row"
-                          method="GET">
-                        <input type="hidden" name="metodo" value="ocultarPerfil"/>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <input type="submit" name="submit" value="Ocultar Perfil" id="submit"
-                                       class="btn btn-primary btn-block btn-flat">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </li>
-            <li>
-                <div>
-                    <form action="../servicios.php" class="contact-edit row"
-                          method="post" id="contacto">
-                        <input type="hidden" name="metodo" value="logOut"/>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <input type="submit" name="submit" value="Cerrar Sesión" id="submit"
-                                       class="btn btn-primary btn-block btn-flat">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-        </ul>
-
-    </nav>
-
-</header>
-
-<main class="centrar_main">
-
-    <?php if (isset($error_message)): ?>
-        <div class="errorMsg">
-            <?php echo $error_message ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if (isset($success_message)): ?>
-        <div class="successMsg">
-            <?php echo $success_message ?>
-        </div>
-    <?php endif; ?>
+<main class="centrar_main centrar_main_home">
     <div>
+
         <div>
             <?php
             if (isset($_POST['metodo'])) {
@@ -136,84 +66,125 @@ $name = $_SESSION['username'];
                     echo editarusuario($_POST);
                     // echo 'Editar Usuario';
                 }
-
             }
             ?>
         </div>
-        <table>
-            <thead>
-            <tr><h2>Sus archivos en un lugar seguro!</h2></tr>
-            <tr>
-                <!--archivo($fecha, $tamano, $descripcion, $clasificacion,$autor)-->
-                <th colspan="2">Administrador de Archivos</th>
-                <th colspan="3">
-                    <form action='home.php' method='POST'>
-                        <input type="hidden" name="metodo" value="buscar" placeholder="Filtrar contenido..."/>
-                        <input type="text" name="busqueda" placeholder="Filtrar contenido..."/>
-                        <button type="submit" name="submit"><img src="../images/busqueda.png">Filtrar</button>
-                    </form>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            if (isset($_POST['metodo'])) {
-                if ($_POST['metodo'] == 'buscar') {
-                    $valor_buscado = $_POST['busqueda'];
-                    if ($valor_buscado !== '') {
-                        echo getFiles_HTML_FILTRO($_SESSION['username'], $valor_buscado);
+
+        <?php if(isset($_GET['metodo'])): ?>
+
+            <?php if($_GET['metodo'] == 'verPerfil'): ?>
+
+                <?php echo ver_perfil_usuario(); ?>
+
+            <?php endif; ?>
+
+        <?php else: ?>
+
+            <h2>Sus archivos en un lugar seguro
+                <img style="width: 40px; float: right;" src="../images/mp4.png">
+            </h2>
+
+            <form action='home.php' method='POST'>
+                <input type="hidden" name="metodo" value="buscar" placeholder="Buscar"/>
+                <input type="text" name="busqueda" placeholder="Buscar archivos"/>
+                <button type="submit" name="submit"><img src="../images/busqueda.png"></button>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        Archivo
+                    </th>
+                    <th>
+                        Autor
+                    </th>
+                    <th>
+                        Descripcion
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                    <th>
+                        Peso
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                if (isset($_POST['metodo'])) {
+                    if ($_POST['metodo'] == 'buscar') {
+                        $valor_buscado = $_POST['busqueda'];
+                        if ($valor_buscado !== '') {
+                            echo getFiles_HTML_FILTRO($_SESSION['username'], $valor_buscado);
+                        } else {
+                            echo getFiles_HTML($_SESSION['username']);
+                        }
                     } else {
                         echo getFiles_HTML($_SESSION['username']);
                     }
+
                 } else {
                     echo getFiles_HTML($_SESSION['username']);
                 }
+                ?>
 
-            } else {
-                echo getFiles_HTML($_SESSION['username']);
-            }
-            ?>
-            <tr id="last_row">
+                <tr id="last_row">
 
-                <form action="../servicios.php" class="contact-edit row"
-                      method="post" enctype="multipart/form-data" id="contacto">
+                    <td colspan="7" style="    border: darkseagreen solid 1px;
+                    background: darkseagreen;">
+                        <form action="../servicios.php" class="contact-edit row"
+                              method="post" enctype="multipart/form-data" id="contacto">
 
+                            <input type="hidden" name="metodo" value="agregarArchivo"/>
+                            <input style="display: block" type="file" name="userfile" id="fileToUpload" value="Cargar">
 
-                    <td colspan="2">
-                        <input type="hidden" name="metodo" value="agregarArchivo"/>
-                        <input type="file" name="userfile" id="fileToUpload" value="Cargar">
+                            <div class="styled-select blue semi-square" style="
+                                margin: 5px 0px;
+                        ">
+                                <select class="dropdown" id="categoria" name="categoria[]">
+                                    <option value="Comedia">Comedia</option>
+                                    <option value="Terror">Terror</option>
+                                    <option value="Familiar">Familiar</option>
+                                    <option value="Educativo">Educativo</option>
+                                    <option value="Entretenimiento" selected="true">Entretenimiento</option>
+                                </select>
+
+                            </div>
+
+                            <input type="text" name="descripcion" placeholder="Descripcion" style="
+    display: block;
+    width: 235px;
+"/>
+                            <input type="submit" name="submit" value="Agregar" id="submit" style="
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+    width: 25%;
+"
+                                   class="btnregistrar">
+
+                        </form>
                     </td>
-                    <td colspan="1">
-                        <label for="categoria">Categoría</label>
-                        <select id="categoria" name="categoria[]">
-                            <option value="Comedia">Comedia</option>
-                            <option value="Terror">Terror</option>
-                            <option value="Familiar">Familiar</option>
-                            <option value="Educativo">Educativo</option>
-                            <option value="Entretenimiento" selected="true">Entretenimiento</option>
 
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" name="descripcion" placeholder="Descripcion" value=""/>
-                    </td>
-                    <td>
-                        <input type="submit" name="submit" value="Agregar" id="submit"
-                               class="btn btn-primary btn-block btn-flat btn-sm">
+                </tr>
 
-                    </td>
-                </form>
+                </tbody>
+            </table>
 
-            </tr>
-
-            </tbody>
-        </table>
+        <?php endif; ?>
 
     </div>
 
 </main>
 
-<aside>
+<div>
     <?php
     if (isset($_GET['metodo'])) {
         if ($_GET['metodo'] == 'verPerfil') {
@@ -223,8 +194,7 @@ $name = $_SESSION['username'];
         }
     }
     ?>
-
-</aside>
+</div>
 
 <footer>
     <div class="container">
@@ -238,11 +208,11 @@ $name = $_SESSION['username'];
             </div>
             <div class="col-sm-4 pcenter">
                 <p class="font-weight-bold float-center">
-                    <a class="btn btn-link" href="#">HOME</a>
-                    <i class="mr-1 ml-1">|</i>
-                    <a class="btn btn-link" href="#">Crear Cuenta</a>
+                    <a class="btn btn-link" href="#">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
                     <a class="btn btn-link" href="#">Ayuda</a>
+                    <i class="mr-1 ml-1">|</i>
+                    <a class="btn btn-link" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">

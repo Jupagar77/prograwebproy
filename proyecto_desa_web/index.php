@@ -1,7 +1,8 @@
 <?php
 include("servicios.php");
-//session_start();
-//session_destroy();
+
+session_start();
+
 if (isset($_SESSION['login'])) {
     header("Location: " . getBaseUrl() . "vistas/home.php");
 }
@@ -34,7 +35,7 @@ if (isset($_SESSION['error_msg'])) {
 <body>
 
 <div class="topnav">
-    <a class="active" href="#">Home</a>
+    <a class="active" href="#">Inicio</a>
     <a href="vistas/agregar.php">Registrarse</a>
     <a href="">Contactenos</a>
     <a href="">Sobre nosotros</a>
