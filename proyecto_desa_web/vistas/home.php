@@ -36,10 +36,10 @@ $name = $_SESSION['username'];
         <header>
             <img src="../images/mp4_main.png" class="imglogo" alt="LOGO">   
             <div class="username">
-                    <i>Bienvenid@: <?php echo $name ?> !</i>
-                </div>
+                <i>Bienvenid@: <?php echo $name ?> !</i>
+            </div>
             <h1>ADMINISTRADOR DE ARCHIVOS (.MP4)</h1>
-            
+
             <nav class="navbar navbar-inverse">
                 <ul>
                     <li>
@@ -63,8 +63,8 @@ $name = $_SESSION['username'];
                     <li>
                         <div>
                             <form action="home.php" class="contact-edit row"
-                                  method="GET">
-                                <input type="hidden" name="metodo" value="editarPerfil" />
+                                  method="POST">
+                                <input type="hidden" name="metodo" value="vereditarperfil" />
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <input type="submit" name="submit" value="Editar Perfil" id="submit"
@@ -106,7 +106,7 @@ $name = $_SESSION['username'];
                     </li>
 
                 </ul>
-                
+
             </nav>
 
         </header>
@@ -123,24 +123,36 @@ $name = $_SESSION['username'];
                     <?php echo $success_message ?>
                 </div>
             <?php endif; ?>
-
-            <h2>Sus archivos en un lugar seguro!</h2>
             <div>   
-
-                <table>
-
+                <div>
+                    <?php
+                        if (isset($_POST['metodo'])) {
+                            
+                            if ($_POST['metodo'] == 'vereditarperfil') {
+                                 echo vereditarperfil();
+                                //echo 'Hola mindo';
+                            }else if($_POST['metodo'] == 'editarusuario') {
+                                 echo editarusuario($_POST);
+                               // echo 'Editar Usuario';
+                            }
+                                
+                        } 
+                        ?>
+                </div>
+                <table >
                     <thead>
-                        <tr>
-                            <!--archivo($fecha, $tamano, $descripcion, $clasificacion,$autor)-->
-                            <th colspan="2">Administrador de Archivos</th>
-                            <th colspan="3">
-                                <form action='home.php' method='POST'>
-                                    <input type="hidden" name="metodo" value="buscar" placeholder="Filtrar contenido..."/>
-                                    <input type="text" name="busqueda" placeholder="Filtrar contenido..."/>
-                                    <button type="submit" name="submit"><img src="../images/busqueda.png">Filtrar</button>
-                                </form>
-                            </th>   
-                        </tr>
+                        <tr><h2>Sus archivos en un lugar seguro!</h2></tr>
+                    <tr>
+                        <!--archivo($fecha, $tamano, $descripcion, $clasificacion,$autor)-->
+                        <th colspan="2">Administrador de Archivos</th>
+                        <th colspan="3">
+                            <form action='home.php' method='POST'>
+                                <input type="hidden" name="metodo" value="buscar" placeholder="Filtrar contenido..."/>
+                                <input type="text" name="busqueda" placeholder="Filtrar contenido..."/>
+                                <button type="submit" name="submit"><img src="../images/busqueda.png">Filtrar</button>
+                            </form>
+                        </th>   
+                    </tr>
                     </thead>
                     <tbody>                      
                         <?php
@@ -152,7 +164,10 @@ $name = $_SESSION['username'];
                                 } else {
                                     echo getFiles_HTML($_SESSION['username']);
                                 }
+                            } else {
+                                echo getFiles_HTML($_SESSION['username']);
                             }
+                            
                         } else {
                             echo getFiles_HTML($_SESSION['username']);
                         }
@@ -161,11 +176,10 @@ $name = $_SESSION['username'];
 
                     <form action="../servicios.php" class="contact-edit row"
                           method="post" enctype="multipart/form-data" id="contacto">
-                        <td>
-                            <input type="hidden" name="metodo" value="agregarArchivo" />
-                            Agregar nuevo:
-                        </td>
-                        <td colspan="1">
+                      
+                            
+                        <td colspan="2">
+                            <input type="hidden" name="metodo" value="agregarArchivo" />                            
                             <input type="file" name="userfile" id="fileToUpload" value="Cargar">
                         </td>
                         <td colspan="1">
@@ -196,22 +210,19 @@ $name = $_SESSION['username'];
 
             </div>
 
-            <aside style="float: right">
-                <?php
-                if (isset($_GET['metodo'])) {
-                    if ($_GET['metodo'] == 'editarPerfil') {
-                        // echo ver_perfil_usuario();
-                    } else if ($_GET['metodo'] == 'verPerfil') {
-                        echo ver_perfil_usuario();
-                    } else if ($_GET['metodo'] == 'detallesArchivo') {
-                        echo detallesArchivo($data);
-                    }
-                }
-                ?>
-
-            </aside>
-
         </main>
+        <aside>
+            <?php
+            if (isset($_GET['metodo'])) {
+               if ($_GET['metodo'] == 'verPerfil') {
+                    echo ver_perfil_usuario();
+                } else if ($_GET['metodo'] == 'detallesArchivo') {
+                    echo detallesArchivo($data);
+                }
+            }
+            ?>
+
+        </aside>
         <footer>
             <div class="container">
                 <div class="row">
@@ -224,11 +235,11 @@ $name = $_SESSION['username'];
                     </div>
                     <div class="col-sm-4 pcenter">
                         <p class="font-weight-bold float-center">
-                            <a class="btn btn-link" href="#" >Terms of Use</a>
+                            <a class="btn btn-link" href="#" >HOME</a>
                             <i class="mr-1 ml-1">|</i>
-                            <a class="btn btn-link" href="#">About</a>
+                            <a class="btn btn-link" href="#">Crear Cuenta</a>
                             <i class="mr-1 ml-1">|</i>
-                            <a class="btn btn-link" href="#">Contact Us</a>
+                            <a class="btn btn-link" href="#">Ayuda</a>
                         </p>
                     </div>
                     <div class="col-sm-4 pright">

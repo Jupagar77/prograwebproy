@@ -15,7 +15,7 @@ class archivo {
         $this->url = $url;
     }
     function toString(){
-        $cadena=$this->nombre."*".$this->autor."*".$this->clasificacion."*".$this->descripcion."\n";
+        $cadena=$this->nombre."*".$this->autor."*".$this->clasificacion."*".$this->descripcion."*1\n";
         return $cadena; 
     }
     function getNombre() {
