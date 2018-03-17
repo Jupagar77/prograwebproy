@@ -1,30 +1,39 @@
 <?php
 
 class archivo {
-    private $fecha;
-    private $tamano;
+     private $nombre;
     private $descripcion;
     private $clasificacion;
     private $autor;
+    private $url;
     
-    function archivo($fecha, $tamano, $descripcion, $clasificacion,$autor) {
+    function archivo($nombre,$descripcion, $clasificacion,$autor,$url) {
+        $this->nombre=$nombre;
         $this->autor=$autor;
-        $this->feha = $fecha;
-        $this->tamano = $tamano;
         $this->descripcion = $descripcion;
         $this->clasificacion = $clasificacion;
+        $this->url = $url;
     }
     function toString(){
-        $cadena=$this->autor."*".$this->fecha."*".$this->tamano."*".$this->descripcion."*".$this->clasificacion."\n";
+        $cadena=$this->nombre."*".$this->autor."*".$this->clasificacion."*".$this->descripcion."\n";
         return $cadena; 
     }
-    function getFecha() {
-        return $this->fecha;
+    function getNombre() {
+        return $this->nombre;
     }
 
-    function getTamano() {
-        return $this->tamano;
+    function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
+
+        function getUrl() {
+        return $this->url;
+    }
+
+    function setUrl($url) {
+        $this->url = $url;
+    }
+  
 
     function getDescripcion() {
         return $this->descripcion;
@@ -38,13 +47,6 @@ class archivo {
         return $this->autor;
     }
 
-    function setFecha($fecha) {
-        $this->fecha = $fecha;
-    }
-
-    function setTamano($tamano) {
-        $this->tamano = $tamano;
-    }
 
     function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;

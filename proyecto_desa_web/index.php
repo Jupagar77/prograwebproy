@@ -1,7 +1,7 @@
 <?php
 include ("servicios.php");
 //session_start();
-session_destroy();
+//session_destroy();
 if (isset($_SESSION['login'])) {
     header("Location: " . getBaseUrl() . "vistas/home.php");
 }
@@ -13,6 +13,7 @@ if (isset($_SESSION['success_msg'])) {
 }
 
 $error_message = NULL;
+
 if (isset($_SESSION['error_msg'])) {
     $error_message = $_SESSION['error_msg'];
     $_SESSION['error_msg'] = NULL;
@@ -26,26 +27,37 @@ if (isset($_SESSION['error_msg'])) {
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <title>HOME_LOGIN</title>
 
-        <link href="styles.css" rel="stylesheet"/>
-
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-
+        <link href="styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
-        <header>
-            <nav>
+        <header class="header">
+             <img src="images/mp4_main.png" class="imglogo" alt="LOGO">
+            <div>
+           
+            <h1>ADMINISTRADOR DE ARCHIVOS (.MP4)</h1>
+            </div>
+               
+            
+            <div class="">
                 
-            </nav>
+                <nav>
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="btn btn-link" href="#">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-link" href="#">Contact Us</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
         </header>
         <?php if (isset($error_message)): ?>
             <div class="errorMsg">
@@ -71,31 +83,60 @@ if (isset($_SESSION['error_msg'])) {
                     <input type="hidden" name="metodo" value="iniciarSesion" />
                     <div class="form-group has-feedback">
                         <input type="text" name="email" value="" placeholder="Email o usuario" class="form-control" id="login"
-                               maxlength="80" size="30"> <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                               maxlength="80" size="30" required="true"> <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input type="password" name="password" value="" placeholder="Password" class="form-control"
-                               id="password" size="30"> <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                               id="password" size="30" required="true">
+                        <span class="glyphicon glyphicon-lock form-control-feedback">
+
+                        </span>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <input type="submit" name="submit" value="Iniciar sesion" id="submit"
-                                   class="btn btn-primary btn-block btn-flat">
+                                   class="btn btn-primary btn-block btn-flat btnsesion">
                         </div>
                     </div>
                 </form>
 
                 <div class="row" style="margin-top: 10px">
                     <div class="col-xs-12">
-                        <a href="vistas/agregar.php" class="btn btn-info btn-block btn-flat">Registrarse</a>
+                        <a href="vistas/agregar.php" class="btn btn-info btn-block btn-flat btnregistrar">Registrarse</a>
                     </div>
                 </div>
 
             </div><!-- /.login-box-body -->
         </div>
         <footer>
-            
-        </footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4 pleft">
+                        <p class="font-weight-bold float-left">
+                            <img src="images/wifi.png" class="rounded-circle" alt="header">
+                            <img src="images/llama.png" class="rounded-circle" alt="header">
 
+                        </p>
+                    </div>
+                    <div class="col-sm-4 pcenter">
+                        <p class="font-weight-bold float-center">
+                            <a class="btn btn-link" href="#" >Terms of Use</a>
+                            <i class="mr-1 ml-1">|</i>
+                            <a class="btn btn-link" href="#">About</a>
+                            <i class="mr-1 ml-1">|</i>
+                            <a class="btn btn-link" href="#">Contact Us</a>
+                        </p>
+                    </div>
+                    <div class="col-sm-4 pright">
+                        <p class="font-weight-bold float-right">
+                            <img src="images/twiter.png" class="rounded-circle" alt="header">
+                            <img src="images/facebook.png" class="rounded-circle" alt="header">
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <?php session_destroy(); ?>
     </body>
 </html>

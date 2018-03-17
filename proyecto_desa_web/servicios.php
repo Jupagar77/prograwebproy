@@ -8,44 +8,57 @@ session_start();
 $file_users = 'archivos/usuarios.txt';
 $file_users_idx = 'archivos/usuarios_idx.txt';
 $file_user_line = 'archivos/line_user.txt';
+
+$file_archivo = 'archivos/archivo.txt';
+$file_archivo_idx = 'archivos/archivo_idx.txt';
+$file_archivo_line = 'archivos/line_archivo.txt';
 $split = '*';
 
+$indices = obtener_vector_archivo_idx($GLOBALS['file_archivo_idx'], $GLOBALS['split']);
 
-if($data = $_POST){
-switch ($data['metodo']) {
-    case "agregarUsuario":
-        agregarUsuario($data);
-        break;
-    case "borrarUsuario":
-        borrarUsuario($data);
-        break;
-    case "mostrarUsuario":
-        mostrarUsuario($data);
-        break;
-    case "iniciarSesion":
-        iniciarSesion($data);
-        break;
-    case "logOut":
-        logout();
-        break;
-    case "eliminarArchivo":
-        eliminarArchivo($data);
-        break;
-    case "descargarArchivo":
-        descargarArchivo($data);
-        break;
 
-    default:
+if ($data = $_POST) {
+    switch ($data['metodo']) {
+        case "agregarUsuario":
+            agregarUsuario($data);
+            break;
+        case "borrarUsuario":
+            borrarUsuario($data);
+            break;
+        case "mostrarUsuario":
+            mostrarUsuario($data);
+            break;
+        case "agregarArchivo":
+            agregarArchivo($data);
+            break;
+        case "iniciarSesion":
+            iniciarSesion($data);
+            break;
+        case "logOut":
+            logout();
+            break;
+        case "eliminarArchivo":
+            eliminarArchivo($data);
+            break;
+
+
+        case "descargarArchivo":
+            descargarArchivo($data);
+            break;
+
+        default:
             break;
     }
-
 } else {
+
     if ($data = $_GET) {
-        switch ($data['metodo']) {
-            case "logout":
-                logout();
-                break;
-            default: break;
+        if (count($data) > 0) {
+            switch ($data['metodo']) {
+                case "logout":
+                    logout();
+                    break;
+                default: break;
+            }
         }
     }
 }
@@ -55,61 +68,51 @@ function iniciarSesion($data) {
     $_SESSION['login'] = false;
     $_SESSION['login_id'] = NULL;
     //$access_log = fopen($filename, "r");
-
     if (isset($data['email']) && isset($data['password'])) {
-        $vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
-        if (login($data['email'], $data["password"], $vector_usuarios)) {
-       
+        $vector_idx_usuarios = obtener_vector_archivo_idx($GLOBALS['file_users_idx'], $GLOBALS['split']);
+        if (login($data['email'], $data["password"], $vector_idx_usuarios)) {
+
             $_SESSION['login'] = true;
             $_SESSION['user_email'] = $data['email'];
             $_SESSION['login_id'] = $data['email'];
+
             $_SESSION['success_msg'] = "Inicio de sesion correcto!";
-           
-           header("Location: " . getBaseUrl() . "vistas/home.php");
+
+            header("Location: " . getBaseUrl() . "vistas/home.php");
         } else {
-           $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
-           header("Location: " . getBaseUrl() . "index.php");
+            $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
+            header("Location: " . getBaseUrl() . "index.php");
         }
+    } else {
+        $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
+        // header("Location: " . getBaseUrl() . "index.php");
     }
-//    if ($access_log) {
-//        $index = NULL;
-//        while (!feof($access_log)) {
-//            $line = fgets($access_log);
-//            $line = str_replace("\n", "", $line);
-//            $email = substr($line, 4, strlen($line));
-//            $email = str_replace("&", "", $email);
-//            $id = (integer) (substr($line, 0, 4));
-//            if ($id) {
-//                if ($data["email"] == $email) {
-//                    $index = $id;
-//                }
-//            }
-//        }
-//        fclose($access_log);
-//
-//        if ($index) {
-//            $index -= 1;
-//            $index = $index * 180;
-//            $fp = fopen("archivos/usuariosDetalles.txt", 'r');
-//            $dataFile = fgets($fp);
-//            fseek($fp, $index);
-//            $dataFile = fgets($fp);
-//            $dataFile = substr($dataFile, 0, 180);
-//            $password = str_replace('&', '', (substr($dataFile, 150, 30)));
-//            if ($password == $data["password"]) {
-//                $_SESSION['login'] = true;
-//                $_SESSION['login_id'] = $index;
-//                $_SESSION['success_msg'] = "Inicio de sesion correcto.";
-//                header("Location: " . getBaseUrl() . "index.php");
-//            } else {
-//                $_SESSION['error_msg'] = "Credenciales invalidas, intente de nuevo.";
-//                header("Location: " . getBaseUrl() . "index.php");
-//            }
-//        } else {
-//            $_SESSION['error_msg'] = "El usuario no existe, favor registrarse o verificar las credenciales.";
-//            header("Location: " . getBaseUrl() . "index.php");
-//        }
-//    }
+}
+
+function agregarArchivo($data) {
+    //if(isset($_SESSION['username'])){
+    $user_name = $_SESSION['username'];
+    $target_dir = "storage/" . $user_name . '/';
+    $nombre = $_FILES["userfile"]["name"];
+    $url = $target_dir . $nombre;
+    if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $url)) {
+        //$tam_file2 = $_FILES["userfile"]["size"];
+        //$tam_file = FileSizeConvert($tam_file2);
+        $descripcion = $_POST['descripcion'];
+        $clasificacion = $_POST['categoria'];
+        $autor = $user_name;
+        $categoria = $clasificacion[0];
+        $archivo = new archivo($nombre, $descripcion, $categoria, $autor, $url);
+        // echo 'Tam archivo: ' . $tam_file . $_POST['descripcion'];
+        guardar_archivo($GLOBALS['file_archivo'], $GLOBALS['file_archivo_idx'], $GLOBALS['file_archivo_line']
+                , $archivo);
+    } else {
+        $_SESSION['error_msg'] = "No se guardó el archivo.";
+    }
+    header("Location: " . getBaseUrl() . "vistas/home.php");
+    ////}else {
+    //    $_SESSION['error_msg'] = "La sesión no está activa.";
+    //}
 }
 
 function agregarUsuario($data) {
@@ -117,96 +120,17 @@ function agregarUsuario($data) {
         $vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
 
         // var_dump($vector_usuarios);
-        if (!existe_usuario($data["email"],$data["nombre"], $vector_usuarios)) { //si no existe el usuario, se debe agregar
+        if (!existe_usuario($data["email"], $data["nombre"], $vector_usuarios)) { //si no existe el usuario, se debe agregar
             $usuario = new usuario($data["nombre"], $data["trabajo"], $data["celular"], $data["email"], $data["direccion"], $data["password"]);
             guardar_usuario($GLOBALS['file_users'], $GLOBALS['file_users_idx'], $GLOBALS['file_user_line'], $usuario);
             $_SESSION['success_msg'] = "El usuario ha sido agregado, inicie sesión!";
-            // header("Location: " . getBaseUrl() . "index.php");
+            header("Location: " . getBaseUrl() . "index.php");
         } else {
             $_SESSION['error_msg'] = "El usuario ya  está registrado.";
         }
     } else {
         $_SESSION['error_msg'] = "El usuario no ha sido agregado.";
     }
-//    $filename = "archivos/usuarios.txt";
-//    $access_log = fopen($filename, "r");
-//    if ($access_log) {
-//        //if (!$data['indice']) {
-//            if ($data["nombre"] && $data["trabajo"] && $data["celular"] && $data["email"] && $data["direccion"]) {
-//                $i = 0;
-//                while (!feof($access_log)) {
-//                    $line = fgets($access_log);
-//                    $i++;
-//                }
-//                fclose($access_log);
-//                $index = str_pad($i, 4, "&");
-//                $email = str_pad($data["email"], 30, "&");
-//                $string = $index . $email . "\n";
-//                $fileWrite = fopen($filename, "a");
-//                fwrite($fileWrite, $string);
-//                fclose($fileWrite);
-//
-//                $work = str_pad($data["trabajo"], 30, "&");
-//                $mobile = str_pad($data["celular"], 30, "&");
-//                $name = str_pad($data["nombre"], 30, "&");
-//                $address = str_pad($data["direccion"], 30, "&");
-//                $password = str_pad($data["password"], 30, "&");
-//                $fileWrite = fopen("usuariosDetalles.txt", "a");
-//                fwrite($fileWrite, $name);
-//                fwrite($fileWrite, $work);
-//                fwrite($fileWrite, $mobile);
-//                fwrite($fileWrite, $email);
-//                fwrite($fileWrite, $address);
-//                fwrite($fileWrite, $password);
-//                fclose($fileWrite);
-//                $_SESSION['success_msg'] = "Usuario registrado con exito, ya puede iniciar sesion.";
-//                header( "Location: " . getBaseUrl() . "index.php" );
-//                exit;
-//            }
-    //} else {
-    /* $i = 0;
-      $access_log = fopen($filename, "r");
-      $completeFile = "";
-      while (!feof($access_log)) {
-      $line = fgets($access_log);
-      $i++;
-      if ($i == $data['indice']) {
-      $newName = str_pad($data["nombre"], 30, "&") . "\n";
-      $line = substr_replace($line, $newName, 4, strlen($line));
-      }
-      $completeFile .= $line;
-      }
-      fclose($access_log);
-      $fileWrite = fopen($filename, "w");
-      fwrite($fileWrite, $completeFile);
-      fclose($fileWrite);
-
-      $detalles = file_get_contents("usuariosDetalles.txt");
-      $detallesRewrite = "";
-      $i = 0;
-      for ($k = 0; $k < strlen($detalles); $k += 180) {
-      $i++;
-      $lineTwo = substr($detalles, $k, 180);
-      if ($i == $data['indice']) {
-      $name = str_pad($data["nombre"], 30, "&");
-      $work = str_pad($data["trabajo"], 30, "&");
-      $mobile = str_pad($data["celular"], 30, "&");
-      $email = str_pad($data["email"], 30, "&");
-      $address = str_pad($data["direccion"], 30, "&");
-      $lineTwo = substr_replace($lineTwo, $name, 0, 30);
-      $lineTwo = substr_replace($lineTwo, $work, 30, 30);
-      $lineTwo = substr_replace($lineTwo, $mobile, 60, 30);
-      $lineTwo = substr_replace($lineTwo, $email, 90, 30);
-      $lineTwo = substr_replace($lineTwo, $address, 120, 30);
-      $email = '';
-      }
-      $detallesRewrite .= $lineTwo;
-      }
-      $fileWrite = fopen("usuariosDetalles.txt", "w");
-      fwrite($fileWrite, $detallesRewrite);
-      fclose($fileWrite); */
-    //}
-    //}
 }
 
 function borrarUsuario($data) {
@@ -232,6 +156,7 @@ function borrarUsuario($data) {
 }
 
 function mostrarUsuario($indice) {
+
 //    $index = $indice * 180;
 //    $fp = fopen("archivos/usuariosDetalles.txt", "r");
 //    $dataFile = fgets($fp);
@@ -249,6 +174,7 @@ function logout() {
     $_SESSION['login'] = false;
     $_SESSION['login_id'] = NULL;
     $_SESSION['success_msg'] = "Sesion cerrada.";
+    session_destroy();
     header("Location: " . getBaseUrl() . "index.php");
 }
 
@@ -317,20 +243,26 @@ function FileSizeConvert($bytes) {
 function eliminarArchivo($data) {
     if (isset($data['ruta_archivo'])) {
         $archivo = $_POST['ruta_archivo'];
+        $num = $_POST['numero'];
+        $indices = $GLOBALS['indices'];
         unlink($archivo);
-        echo $archivo;
+        // var_dump($indices);
+        $GLOBALS['indices'] = eliminardelarchivo($indices, $num);
+        //var_dump($GLOBALS['indices']);
+        reescribe_indices_archivo($GLOBALS['file_archivo_idx'], $GLOBALS['indices']);
+        // echo $archivo;
         $_SESSION['success_msg'] = "Archivo eliminado.";
     } else {
         $_SESSION['error_msg'] = "El archivo no pudo ser eliminado.";
     }
-    // header("Location: " . getBaseUrl() . "vistas/home.php");
+    header("Location: " . getBaseUrl() . "vistas/home.php");
     // header('Location: ../vistas/home.php');
 }
 
 function descargarArchivo($data) {
     if (isset($data['ruta_archivo'])) {
         $archivo = $_POST['ruta_archivo'];
-        echo $archivo;
+        //echo $archivo;
         header("Location: " . $archivo);
     } else {
         $_SESSION['error_msg'] = "El archivo no se puede descargar.";
@@ -339,40 +271,123 @@ function descargarArchivo($data) {
     // header('Location: ../vistas/home.php');
 }
 
+function detallesArchivo($data) {
+    $linea=$data['linea'];
+    $tam=$data['tam'];
+    $url='../'.$data['ruta_archivo'];
+   // echo FileSizeConvert(filesize ($url));
+  // echo $tam;
+     $datos= buscar_elemento('../'.$GLOBALS['file_archivo'], $tam, $linea);
+    $vec = explode('*', $datos);
+    $detalle = '<div>';
+    $detalle = '<h2>' . 'Detalles del archivo: ' . '</h2>';
+    $detalle .= '<b> Autor ' . $vec[1] . '</b>';
+    $detalle .= '<p> <b>Categoría: </b> ' . $vec[2] . '</p>';
+    $detalle .= '<p><b> Descripción: </b> ' . $vec[3] . '</p>';
+    $detalle .= '<p> <b>Peso: </b> ' . FileSizeConvert(filesize ($url)) . '</p>';
+    $detalle .= '<p> <b>Fecha modificación: </b> ' . date("F d Y H:i:s.", filectime($url)) . '</p>';
+    $detalle .= '</div>';
+    return $detalle;
+}
+
+
+function generar_detalle_archivo_HTML($file_archivo,$linea,$tam) {
+    //obtener_vector_archivo_idx($file, $split);
+    $datos= buscar_elemento($file_archivo, $linea, $tam);
+    $vec = explode('*', $datos);
+    $detalle = '<div>';
+    $detalle = '<h2>' . 'Detalles del archivo: ' . '</h2>';
+    $detalle .= '<b> Autor ' . $vec[1] . '</b>';
+    $detalle .= '<p> <b>Categoría:</b> ' . $vec[2] . '</p>';
+    $detalle .= '<p><b> Mobile:</b> ' . $vec[3] . '</p>';
+    $detalle .= '<p> <b>Email:</b> ' . $vec[3] . '</p>';
+    $detalle .= '<p> <b>Address:</b> ' . $vec[4] . '</p>';
+    $detalle .= '</div>';
+    return $detalle;
+}
 function getFiles_HTML($directorio) {
-    // echo getHost();
-    $path = '../storage/' . $directorio . '/';
-    $handle = opendir($path);
     $cadena = '';
-    if ($handle) {
-        while (false !== ($file = readdir($handle))) {
-            if ($file !== '.' || $file !== '..') {
-                $cadena .= '<tr>';
+    $indices = $indices = obtener_vector_archivo_idx('../' . $GLOBALS['file_archivo_idx'], $GLOBALS['split']);
+    for ($i = 0; $i < count($indices); $i++) {
+        $vector = $indices[$i];
 
-                $peso = FileSizeConvert(filesize($path . $file));
-                $cadena .= '<td>' . $file . '</td>';
-                $cadena .= '<td><button type="submit" name="submit"><img src="../images/busqueda.png">Detalles</button></td>';
+        if ($vector[4] === '1' && $vector[1] === $directorio) {
+            
+            $nombre_archivo = $vector[1] . '/' . $vector[0];
+            $cadena .= '<tr>';
+            $cadena .= '<td>' . $vector[0] . '</td>';
 
-                $cadena .= "<form action='../servicios.php' method='POST'>";
-                $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
-                        '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'prograwebproy/proyecto_desa_web/storage/' . $directorio . '/' . $file . '"/>'
-                        . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
-                $cadena .= '</form>';
+            $cadena .= "<form action='home.php' method='GET'>";
+            $cadena .= '<td><input type="hidden" name="metodo" value="detallesArchivo" />' .
+                    '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
+                    .'<input type="hidden" name="linea" value="' .$vector[2]  . '"/>'
+                    .'<input type="hidden" name="tam" value="' .$vector[3] . '"/>'
+                    . '<button type="submit" name="submit">'
+                    . '<img src="../images/busqueda.png">Detalles</button></td>';
+            $cadena .= '</form>';
 
-                $cadena .= "<form action='../servicios.php' method='POST'>";
-                $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
-                $cadena .= '</form>';
+            $cadena .= "<form action='../servicios.php' method='POST'>";
+            $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
+                    // '<input type="hidden" name="metodo" value="' . $i . '" />' .
+                    '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'proyecto_desa_web/storage/' . $nombre_archivo . '"/>'
+                    . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
+            $cadena .= '</form>';
 
-                $cadena .= "<form action='../servicios.php' method='POST'>";
-                $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />' .
-                        '<input type="hidden" name="ruta_archivo" value="storage/' . $directorio . '/' . $file . '"/>'
-                        . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
-                $cadena .= '</form>';
+            $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
 
-                $cadena .= '</tr>';
-            }
+            $cadena .= "<form action='../servicios.php' method='POST'>";
+            $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />' .
+                    '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
+                    . '<input type="hidden" name="numero" value="' . $i . '"/>'
+                    . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
+            $cadena .= '</form>';
+
+            $cadena .= '</tr>';
         }
-        closedir($handle);
     }
     return $cadena;
+}
+
+function getFiles_HTML_FILTRO($directorio,$valor_buscado) {
+     $cadena = '';
+    $indices2 = $indices = obtener_vector_archivo_idx('../' . $GLOBALS['file_archivo_idx'], $GLOBALS['split']);
+    //var_dump($indices);
+    $indices =  filtrar($indices2, $valor_buscado);
+    for ($i = 0; $i < count($indices); $i++) {
+        $vector = $indices[$i];
+        if ($vector[4] === '1' && $vector[1] === $directorio) {            
+            $nombre_archivo = $vector[1] . '/' . $vector[0];
+            $cadena .= '<tr>';
+            $cadena .= '<td>' . $vector[0] . '</td>';
+            $cadena .= "<form action='home.php' method='GET'>";
+            $cadena .= '<td><input type="hidden" name="metodo" value="detallesArchivo" />' .
+                    '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
+                    .'<input type="hidden" name="linea" value="' .$vector[2]  . '"/>'
+                    .'<input type="hidden" name="tam" value="' .$vector[3] . '"/>'
+                    . '<button type="submit" name="submit">'
+                    . '<img src="../images/busqueda.png">Detalles</button></td>';
+            $cadena .= '</form>';
+            $cadena .= "<form action='../servicios.php' method='POST'>";
+            $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
+                    // '<input type="hidden" name="metodo" value="' . $i . '" />' .
+                    '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'proyecto_desa_web/storage/' . $nombre_archivo . '"/>'
+                    . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
+            $cadena .= '</form>';
+            $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
+            $cadena .= "<form action='../servicios.php' method='POST'>";
+            $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />' .
+                    '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
+                    . '<input type="hidden" name="numero" value="' . $i . '"/>'
+                    . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
+            $cadena .= '</form>';
+            $cadena .= '</tr>';
+        }
+    }
+    return $cadena;
+}
+function ver_perfil_usuario() {
+    $linea = (float) $_SESSION['linea_user'];
+    $tam = (float) $_SESSION['tam_user'];
+    echo $tam;
+    return generarHTML_PERFIL(buscar_elemento('../archivos/usuarios.txt', $linea, $tam));
 }

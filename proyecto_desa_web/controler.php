@@ -1,6 +1,7 @@
 <?php
 
 include("clases/usuario.php");
+include("clases/archivo.php");
 
 //  GUARDAR USUARIO EN ARCHIVO
 
@@ -9,19 +10,37 @@ function guardar_usuario($file_users, $file_users_idx, $file_line, $usuario) {
 
     file_put_contents($file_users, $usuario->toString(), FILE_APPEND | LOCK_EX);
     //se crea el directorio con permisos de lectura y escritura
-    mkdir("storage/".$usuario->getNombre(), 0775);
+    mkdir("storage/" . $usuario->getNombre(), 0775);
     //guardar indice
     $n_car = strlen(utf8_decode($usuario->toString()));
-    guardar_indice_usuario($file_users_idx, $file_line, $usuario->getNombre(), $n_car);
+    guardar_indice_usuario($file_users_idx, $file_line, $usuario->getEmail(), $usuario->getNombre(), $n_car);
 }
 
-function guardar_indice_usuario($file_users_idx, $file_line, $nombre, $n_car) {
+function guardar_indice_usuario($file_users_idx, $file_line, $email, $nombre, $n_car) {
     $ub = leer_ultima_linea($file_line);
-    $ub=='' ? $ub = 0 : $ub;
+    $ub == '' ? $ub = 0 : $ub;
     $ubicacion = $ub + $n_car;
-    $car=$nombre . "*" . $n_car . "*" . $ub . "\n";
+    $car = $email . "*" . $nombre . "*" . $n_car . "*" . $ub . "*1" . "\n";
 
     file_put_contents($file_users_idx, $car, FILE_APPEND | LOCK_EX);
+    guardar_ultima_linea($file_line, $ubicacion);
+}
+
+function guardar_archivo($file_arc, $file_arch_idx, $file_line, $archivo) {
+    file_put_contents($file_arc, $archivo->toString(), FILE_APPEND | LOCK_EX);
+    //guardar indice
+    $n_car = strlen(utf8_decode($archivo->toString()));
+    $cadena = $archivo->getNombre() . '*' . $archivo->getAutor();
+    guardar_indice_archivo($file_arch_idx, $file_line, $cadena, $n_car);
+}
+
+function guardar_indice_archivo($file_arch_idx, $file_line, $cadena, $n_car) {
+    $ub = leer_ultima_linea($file_line);
+    $ub == '' ? $ub = 0 : $ub;
+    $ubicacion = $ub + $n_car;
+    $car = $cadena . "*" . $n_car . "*" . $ub . "*1" . "\n";
+
+    file_put_contents($file_arch_idx, $car, FILE_APPEND | LOCK_EX);
     guardar_ultima_linea($file_line, $ubicacion);
 }
 
@@ -52,7 +71,7 @@ function login($usuario, $passwd, $vector_usuarios) {
 }
 
 //define si  el usuario ya está registrado
-function existe_usuario($email,$user_name, $vector_usuarios) {
+function existe_usuario($email, $user_name, $vector_usuarios) {
     if (count($vector_usuarios) == 1) {
         if (is_null($vector_usuarios[0])) {
 
@@ -60,8 +79,8 @@ function existe_usuario($email,$user_name, $vector_usuarios) {
         }
     }
     for ($i = 0; $i < count($vector_usuarios); $i++) {
-        if ($email === $vector_usuarios[$i]->getEmail() ||$user_name === $vector_usuarios[$i]->getNombre()) {
-          
+        if ($email === $vector_usuarios[$i]->getEmail() || $user_name === $vector_usuarios[$i]->getNombre()) {
+
             return true;
         }
     }
@@ -71,9 +90,19 @@ function existe_usuario($email,$user_name, $vector_usuarios) {
 
 function validar_usuario($usuario, $passwd, $vector_usuarios) {
     for ($i = 0; $i < count($vector_usuarios); $i++) {
-        if (($usuario === $vector_usuarios[$i]->getEmail() || $usuario === $vector_usuarios[$i]->getNombre()) && $passwd === $vector_usuarios[$i]->getPassword()) {
-        
-            return true;
+        $vec = $vector_usuarios[$i];
+        if (($usuario === $vec[0] || $usuario === $vec[1]) && $vec[4] == '1') {
+            $usuario2 = buscar_elemento('archivos/usuarios.txt', $vec[3], $vec[2]);
+            // echo $usuario2;
+            $vec2 = explode('*', $usuario2);
+
+            if ($vec2[4] === $passwd) {
+                //echo 'Linea '.$vec[3].' '.$vec[2];
+                $_SESSION['linea_user'] = $vec[3];
+                $_SESSION['tam_user'] = $vec[2];
+                $_SESSION['username'] = $vec[1];
+                return true;
+            }
         }
     }
     return false;
@@ -88,7 +117,6 @@ function obtener_vector_archivo($file, $split) {
         $cont = 0;
         while (list($var, $val) = each($archivo)) {
             // ++$var;
-
             $val2 = trim($val);
             //echo $val2;
             if ($val2 !== '') {
@@ -101,42 +129,100 @@ function obtener_vector_archivo($file, $split) {
             }
             //echo "Line :" . $var . ' es ' . $val2 . '<br />';
         }
-         
+       // fclose($archivo);
+    }
+    return $VEC1;
+}
+
+function obtener_vector_archivo_idx($file, $split) {
+
+    $VEC1[] = NULL;
+    if (file_exists($file)) {
+
+        $archivo = file($file);
+
+        $cont = 0;
+        while (list($var, $val) = each($archivo)) {
+
+            $val2 = trim($val);
+            //echo $val2;
+            if ($val2 !== '') {
+                $res = explode($split, $val2);
+                $VEC1[$cont] = $res;
+                $cont ++;
+            }
+            //echo "Line :" . $var . ' es ' . $val2 . '<br />';
+        }
+        // fclose($archivo);
+    } else {
+        // echo 'el archivo no existe';
+        //el archivo no existe
     }
     return $VEC1;
 }
 
 function buscar_elemento($fichero, $n_linea, $tam) {
-    echo $n_linea . '- ' . $tam;
+
+    //echo $n_linea . '- ' . $tam;
     $fp = fopen($fichero, 'r');
     fseek($fp, $n_linea);
     $data = fgets($fp, $tam);
-    fclose($fichero);
+    fclose($fp);
+    // echo $fichero.' '. $n_linea. '  '. $tam. ' '.$data;
     return $data;
 }
 
-function buscar_detalle($linea, $tam) {
-    echo generarHTML(buscar_elemento('contacto2.txt', $linea, $tam));
+function buscar_detalle_perfil($file, $linea, $tam) {
+
+    return generarHTML_PERFIL(buscar_elemento($file, $linea, $tam));
 }
 
-
-
-function generarHTML($val) {
+function generarHTML_PERFIL($val) {
     $vec = explode('*', $val);
     $detalle = '<div>';
-    $detalle = '<h2>' . 'Usuario buscado: ' . '</h2>';
+    $detalle = '<h2>' . 'Usuario: ' . '</h2>';
     $detalle .= '<b> Name ' . $vec[0] . '</b>';
     $detalle .= '<p> <b>Work:</b> ' . $vec[1] . '</p>';
     $detalle .= '<p><b> Mobile:</b> ' . $vec[2] . '</p>';
     $detalle .= '<p> <b>Email:</b> ' . $vec[3] . '</p>';
-    $detalle .= '<p> <b>Address:</b> ' . $vec[4] . '</p>';
+    $detalle .= '<p> <b>Address:</b> ' . $vec[5] . '</p>';
     $detalle .= '</div>';
     return $detalle;
 }
 
-function guardar_archivo($file, $file_idx, $file_line, $archivo) {
-    file_put_contents($file, $archivo->toString(), FILE_APPEND | LOCK_EX);
-    //guardar indice
-    $n_car = strlen(utf8_decode($archivo->toString()));
-    guardar_indice_usuario($file_idx, $file_line, $usuario->getNombre(), $n_car);
+function eliminardelarchivo($vec, $i) {
+    $v = $vec[$i];
+    // echo 'eliminar del archivo: ';
+    //var_dump($v);
+    $v[4] = 0;
+    $vec[$i] = $v;
+    return $vec;
+}
+
+function reescribe_indices_archivo($file, $vector) {
+    $handle = fopen($file, "w+");
+    for ($i = 0; $i < count($vector); $i++) {
+        $vec = $vector[$i];
+        //var_dump($vec);
+        $linea = $vec[0] . "*" . $vec[1] . "*" . $vec[2] . "*" . $vec[3] . "*" . $vec[4] . "\n";
+        fwrite($handle, $linea);
+    }
+    fclose($handle);
+}
+
+function filtrar($vector, $clave) {
+    $vec_filtro=[];
+    $count=0;
+    for ($i = 0; $i < count($vector); $i++) {       
+        $valor=$vector[$i];
+       // echo $valor[0].' '.$clave;
+        strpos($valor[0].'', $clave)?'Si':'No';
+        if (strpos($valor[0], $clave)) {
+            echo 'entra';
+           $vec_filtro[$count]=$valor;
+           $count++;
+        }
+    }
+     
+    return $vec_filtro;
 }
