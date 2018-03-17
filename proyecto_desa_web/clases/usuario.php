@@ -21,7 +21,7 @@ class usuario {
 
     function toString() {
         $cadena = $this->nombre . "*" . $this->trabajo. "*" . $this->celular. "*" 
-                . $this->email. "*" . $this->password. "*" . $this->direccion . "\n";
+                . $this->email. "*" . $this->password. "*" . $this->direccion . "*1\n";
         return $cadena;
     }
 

@@ -15,7 +15,7 @@ $file_archivo_line = 'archivos/line_archivo.txt';
 $split = '*';
 
 $indices = obtener_vector_archivo_idx($GLOBALS['file_archivo_idx'], $GLOBALS['split']);
-
+$indices_usuarios_home = obtener_vector_archivo_idx('../' . $GLOBALS['file_users_idx'], $GLOBALS['split']);
 
 if ($data = $_POST) {
     switch ($data['metodo']) {
@@ -272,28 +272,36 @@ function descargarArchivo($data) {
 }
 
 function detallesArchivo($data) {
-    $linea=$data['linea'];
-    $tam=$data['tam'];
-    $url='../'.$data['ruta_archivo'];
-   // echo FileSizeConvert(filesize ($url));
-  // echo $tam;
-     $datos= buscar_elemento('../'.$GLOBALS['file_archivo'], $tam, $linea);
+    $linea = $data['linea'];
+    $tam = $data['tam'];
+    $url = '../' . $data['ruta_archivo'];
+    $datos = buscar_elemento('../' . $GLOBALS['file_archivo'], $tam, $linea);
     $vec = explode('*', $datos);
-    $detalle = '<div>';
-    $detalle = '<h2>' . 'Detalles del archivo: ' . '</h2>';
-    $detalle .= '<b> Autor ' . $vec[1] . '</b>';
-    $detalle .= '<p> <b>Categoría: </b> ' . $vec[2] . '</p>';
-    $detalle .= '<p><b> Descripción: </b> ' . $vec[3] . '</p>';
-    $detalle .= '<p> <b>Peso: </b> ' . FileSizeConvert(filesize ($url)) . '</p>';
-    $detalle .= '<p> <b>Fecha modificación: </b> ' . date("F d Y H:i:s.", filectime($url)) . '</p>';
-    $detalle .= '</div>';
+    $detalle = '<table class="tabladetalles">';
+    $detalle .= '<tr>';
+    $detalle .= '<th colspan="5">' . 'Detalles del archivo: ' . '</th>';
+    $detalle .= '</tr>';
+    $detalle .= '<tr>';
+    $detalle .= '<th> Autor </th>';
+    $detalle .= '<th> Categoría </th>';
+    $detalle .= '<th> Descripción </th>';
+    $detalle .= '<th> Peso </th>';
+    $detalle .= '<th> Fecha modificación</th>';
+    $detalle .= '</tr>';
+    $detalle .= '<tr>';
+    $detalle .= '<td><b>' . $vec[1] . '</b></td>';
+    $detalle .= '<td> <b>' . $vec[2] . '</b></td>';
+    $detalle .= '<td><b>' . $vec[3] . '</b></td>';
+    $detalle .= '<td> <b> ' . FileSizeConvert(filesize($url)) . '</b></td>';
+    $detalle .= '<td> <b> ' . date("F d Y H:i:s.", filectime($url)) . '</b> </td>';
+    $detalle .= '</tr>';
+    $detalle .= '</table>';
     return $detalle;
 }
 
-
-function generar_detalle_archivo_HTML($file_archivo,$linea,$tam) {
+function generar_detalle_archivo_HTML($file_archivo, $linea, $tam) {
     //obtener_vector_archivo_idx($file, $split);
-    $datos= buscar_elemento($file_archivo, $linea, $tam);
+    $datos = buscar_elemento($file_archivo, $linea, $tam);
     $vec = explode('*', $datos);
     $detalle = '<div>';
     $detalle = '<h2>' . 'Detalles del archivo: ' . '</h2>';
@@ -305,6 +313,7 @@ function generar_detalle_archivo_HTML($file_archivo,$linea,$tam) {
     $detalle .= '</div>';
     return $detalle;
 }
+
 function getFiles_HTML($directorio) {
     $cadena = '';
     $indices = $indices = obtener_vector_archivo_idx('../' . $GLOBALS['file_archivo_idx'], $GLOBALS['split']);
@@ -312,7 +321,7 @@ function getFiles_HTML($directorio) {
         $vector = $indices[$i];
 
         if ($vector[4] === '1' && $vector[1] === $directorio) {
-            
+
             $nombre_archivo = $vector[1] . '/' . $vector[0];
             $cadena .= '<tr>';
             $cadena .= '<td>' . $vector[0] . '</td>';
@@ -320,8 +329,8 @@ function getFiles_HTML($directorio) {
             $cadena .= "<form action='home.php' method='GET'>";
             $cadena .= '<td><input type="hidden" name="metodo" value="detallesArchivo" />' .
                     '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
-                    .'<input type="hidden" name="linea" value="' .$vector[2]  . '"/>'
-                    .'<input type="hidden" name="tam" value="' .$vector[3] . '"/>'
+                    . '<input type="hidden" name="linea" value="' . $vector[2] . '"/>'
+                    . '<input type="hidden" name="tam" value="' . $vector[3] . '"/>'
                     . '<button type="submit" name="submit">'
                     . '<img src="../images/busqueda.png">Detalles</button></td>';
             $cadena .= '</form>';
@@ -348,29 +357,29 @@ function getFiles_HTML($directorio) {
     return $cadena;
 }
 
-function getFiles_HTML_FILTRO($directorio,$valor_buscado) {
-     $cadena = '';
+function getFiles_HTML_FILTRO($directorio, $valor_buscado) {
+    $cadena = '';
     $indices2 = $indices = obtener_vector_archivo_idx('../' . $GLOBALS['file_archivo_idx'], $GLOBALS['split']);
     //var_dump($indices);
-    $indices =  filtrar($indices2, $valor_buscado);
+    $indices = filtrar($indices2, $valor_buscado);
     for ($i = 0; $i < count($indices); $i++) {
         $vector = $indices[$i];
-        if ($vector[4] === '1' && $vector[1] === $directorio) {            
+        if ($vector[4] === '1' && $vector[1] === $directorio) {
             $nombre_archivo = $vector[1] . '/' . $vector[0];
             $cadena .= '<tr>';
             $cadena .= '<td>' . $vector[0] . '</td>';
             $cadena .= "<form action='home.php' method='GET'>";
             $cadena .= '<td><input type="hidden" name="metodo" value="detallesArchivo" />' .
                     '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
-                    .'<input type="hidden" name="linea" value="' .$vector[2]  . '"/>'
-                    .'<input type="hidden" name="tam" value="' .$vector[3] . '"/>'
+                    . '<input type="hidden" name="linea" value="' . $vector[2] . '"/>'
+                    . '<input type="hidden" name="tam" value="' . $vector[3] . '"/>'
                     . '<button type="submit" name="submit">'
                     . '<img src="../images/busqueda.png">Detalles</button></td>';
             $cadena .= '</form>';
             $cadena .= "<form action='../servicios.php' method='POST'>";
             $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
                     // '<input type="hidden" name="metodo" value="' . $i . '" />' .
-                    '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'proyecto_desa_web/storage/' . $nombre_archivo . '"/>'
+                    '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'prograwebproy/proyecto_desa_web/storage/' . $nombre_archivo . '"/>'
                     . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
             $cadena .= '</form>';
             $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
@@ -385,9 +394,46 @@ function getFiles_HTML_FILTRO($directorio,$valor_buscado) {
     }
     return $cadena;
 }
+
 function ver_perfil_usuario() {
     $linea = (float) $_SESSION['linea_user'];
     $tam = (float) $_SESSION['tam_user'];
-    echo $tam;
+    //echo $tam;
     return generarHTML_PERFIL(buscar_elemento('../archivos/usuarios.txt', $linea, $tam));
+}
+
+function vereditarperfil() {
+    $linea = (float) $_SESSION['linea_user'];
+    $tam = (float) $_SESSION['tam_user'];
+    //echo $tam;
+    return generarHTML_PERFIL_EDITAR(buscar_elemento('../archivos/usuarios.txt', $linea, $tam));
+}
+
+function editarusuario($data) {
+    $nombre = $_SESSION['username'];
+    $trabajo = $data['trabajo'];
+    $celular = $data['celular'];
+    $email = $data['email'];
+    $direccion = $data['direccion'];
+    $password = $data['password'];
+    // echo $username;    
+    $vector_idx_usuarios = $GLOBALS['indices_usuarios_home'];
+    for ($i = 0; $i < count($vector_idx_usuarios); $i++) {
+        $vec_val = $vector_idx_usuarios[$i];
+        if ($vec_val[4] === '1' && $vec_val[1] === $nombre) {
+            $vec_actualizado = eliminardelarchivo($vector_idx_usuarios, $i); //borrado logico
+            reescribe_indices_archivo('../' . $GLOBALS['file_users_idx'], $vec_actualizado); //escritura
+            agregarUsuarioEditar($nombre, $trabajo, $celular, $email, $direccion, $password);
+            //$GLOBALS['indices_usuarios_home']=obtener_vector_archivo_idx('../' . $GLOBALS['file_users_idx'], $GLOBALS['split']);
+            // var_dump($GLOBALS['indices_usuarios_home']);
+        }
+    }
+}
+
+function agregarUsuarioEditar($nombre, $trabajo, $celular, $email, $direccion, $password) {
+    $usuario = new
+            usuario($nombre, $trabajo, $celular, $email, $direccion, $password);
+    guardar_usuario2('../' . $GLOBALS['file_users'],
+            '../' . $GLOBALS['file_users_idx'], 
+            '../' . $GLOBALS['file_user_line'], $usuario);
 }

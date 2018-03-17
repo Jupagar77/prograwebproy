@@ -16,14 +16,26 @@ function guardar_usuario($file_users, $file_users_idx, $file_line, $usuario) {
     guardar_indice_usuario($file_users_idx, $file_line, $usuario->getEmail(), $usuario->getNombre(), $n_car);
 }
 
+function guardar_usuario2($file_users, $file_users_idx, $file_line, $usuario) {
+    //echo $file_users.' '. $file_users_idx .' '.$file_line;
+    file_put_contents($file_users, $usuario->toString(), FILE_APPEND | LOCK_EX);
+    $n_car = strlen(utf8_decode($usuario->toString()));
+    guardar_indice_usuario($file_users_idx, $file_line, $usuario->getEmail(), $usuario->getNombre(), $n_car);
+}
+
 function guardar_indice_usuario($file_users_idx, $file_line, $email, $nombre, $n_car) {
     $ub = leer_ultima_linea($file_line);
     $ub == '' ? $ub = 0 : $ub;
     $ubicacion = $ub + $n_car;
     $car = $email . "*" . $nombre . "*" . $n_car . "*" . $ub . "*1" . "\n";
-
+    actualizarIndicesSesion($ub, $n_car);
     file_put_contents($file_users_idx, $car, FILE_APPEND | LOCK_EX);
     guardar_ultima_linea($file_line, $ubicacion);
+}
+
+function actualizarIndicesSesion($linea, $tam) {
+    $_SESSION['linea_user'] = $linea;
+    $_SESSION['tam_user'] = $tam;
 }
 
 function guardar_archivo($file_arc, $file_arch_idx, $file_line, $archivo) {
@@ -129,7 +141,7 @@ function obtener_vector_archivo($file, $split) {
             }
             //echo "Line :" . $var . ' es ' . $val2 . '<br />';
         }
-       // fclose($archivo);
+        // fclose($archivo);
     }
     return $VEC1;
 }
@@ -179,14 +191,68 @@ function buscar_detalle_perfil($file, $linea, $tam) {
 
 function generarHTML_PERFIL($val) {
     $vec = explode('*', $val);
-    $detalle = '<div>';
-    $detalle = '<h2>' . 'Usuario: ' . '</h2>';
-    $detalle .= '<b> Name ' . $vec[0] . '</b>';
-    $detalle .= '<p> <b>Work:</b> ' . $vec[1] . '</p>';
-    $detalle .= '<p><b> Mobile:</b> ' . $vec[2] . '</p>';
-    $detalle .= '<p> <b>Email:</b> ' . $vec[3] . '</p>';
-    $detalle .= '<p> <b>Address:</b> ' . $vec[5] . '</p>';
-    $detalle .= '</div>';
+    $detalle = '<table class="tabladetalles">';
+    $detalle .= '<tr><th colspan="5">' . 'Detalles del usuario: ' . '</th></tr>';
+    $detalle .= '<tr>';
+    $detalle .= '<th>Nombre</th>';
+    $detalle .= '<th>Num Trabajo </th>';
+    $detalle .= '<th>Mobile</th>';
+    $detalle .= '<th>Email</th>';
+    $detalle .= '<th>Dirección</th>';
+    $detalle .= '</tr>';
+
+    $detalle .= '<tr>';
+    $detalle .= '<td><b>' . $vec[0] . '</b> </td>';
+    $detalle .= '<td><b> ' . $vec[1] . '</b> </td>';
+    $detalle .= '<td><b>' . $vec[2] . '</b> </td>';
+    $detalle .= '<td><b>' . $vec[3] . '</b> </td>';
+    $detalle .= '<td><b>' . $vec[5] . '</b> </td>';
+
+    $detalle .= '</tr>';
+    $detalle .= '</table>';
+
+    return $detalle;
+}
+
+function generarHTML_PERFIL_EDITAR($val) {
+    $vec = explode('*', $val);
+    $detalle = '<form action="home.php" class="contact-edit row"
+                              method="post" id="contacto">';
+    $detalle .= '<table class="tabladetalles">';
+    $detalle .= '<tr><th colspan="6">' . 'Editar usuario: ' . '</th></tr>';
+    $detalle .= '<tr>';
+    $detalle .= '<th>Nombre Usuario</th>';
+    $detalle .= '<th>Num Trabajo </th>';
+    $detalle .= '<th>Mobile</th>';
+    $detalle .= '<th>Email</th>';
+    $detalle .= '<th>Password</th>';
+    $detalle .= '<th>Dirección</th>';
+    $detalle .= '</tr>';
+
+    $detalle .= '<tr>';
+    $detalle .= '<td><input maxlength="30" type="text" class="form-control" name="nombre" required id="nombre" disabled value="' . $vec[0] . '"/> </td>';
+    $detalle .= '<td> <input maxlength="30" type="text" class="form-control" name="trabajo" id="trabajo" required value="' . $vec[1] . '"/></td>';
+    $detalle .= '<td><input maxlength="30" type="text" class="form-control" name="celular" id="celular" required value="' . $vec[2] . '"> </td>';
+    $detalle .= '<td><input maxlength="30" type="email" class="form-control" name="email" required id="email" value="' . $vec[3] . '"></td>';
+
+    $detalle .= '<td><input maxlength="30" type="password" class="form-control" name="password" id="password" required> </td>';
+    $detalle .= '<td><input  type="text" class="form-control" name="direccion" required id="direccion" value="' . $vec[5] . '"></td>';
+    $detalle .= '</tr>';
+    $detalle .= '<tr>';
+
+    $detalle .= '<td colspan="4">';
+    $detalle .= '<input type="hidden" name="metodo" value="editarusuario" />';
+    $detalle .= '</td>';
+    $detalle .= '<td>';
+    $detalle .= '<a style="margin-right: 10px" href="home.php" class="btn btn-danger btncancelar">Cancelar</a>';
+    $detalle .= '</td>';
+    $detalle .= '<td>';
+    $detalle .= '<button type="submit" class="btn btn-primary btnregistrar">Editar</button>';
+    $detalle .= '</td>';
+    $detalle .= '</tr>';
+    $detalle .= '</table>';
+
+    $detalle .= '</form>';
     return $detalle;
 }
 
@@ -211,18 +277,18 @@ function reescribe_indices_archivo($file, $vector) {
 }
 
 function filtrar($vector, $clave) {
-    $vec_filtro=[];
-    $count=0;
-    for ($i = 0; $i < count($vector); $i++) {       
-        $valor=$vector[$i];
-       // echo $valor[0].' '.$clave;
-        strpos($valor[0].'', $clave)?'Si':'No';
+    $vec_filtro = [];
+    $count = 0;
+    for ($i = 0; $i < count($vector); $i++) {
+        $valor = $vector[$i];
+        // echo $valor[0].' '.$clave;
+        strpos($valor[0] . '', $clave) ? 'Si' : 'No';
         if (strpos($valor[0], $clave)) {
             echo 'entra';
-           $vec_filtro[$count]=$valor;
-           $count++;
+            $vec_filtro[$count] = $valor;
+            $count++;
         }
     }
-     
+
     return $vec_filtro;
 }

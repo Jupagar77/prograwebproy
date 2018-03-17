@@ -47,8 +47,7 @@ header h1{
     float:left;
     margin-top: 10px;
     margin-left: 150px;
-
-
+    
     border-radius: 12px;
     border: 2px;
     border-style: groove;
@@ -130,7 +129,7 @@ nav ul li a{
     background-color: #247ba0;
     color: #000000;
 }
-.centrar_main{
+.centrar_main,aside{
      display: flex;
     justify-content: center;
 }
@@ -177,6 +176,9 @@ table{
     border-bottom: solid 1px black;
     border-top: solid 1px black;
 }
+.tabladetalles{
+    margin-top: 10px;
+}
 
 th{
     border-left:solid 1px black;
@@ -189,10 +191,11 @@ td{
 
 }
 tr:nth-child(even) {
-    background: lightskyblue;
+   background: #FFF;
 }
 tr:nth-child(odd) {
-    background: #FFF
+     background: lightskyblue;
+    
 }
 #last_row{
     margin: 8px;

@@ -1,3 +1,1 @@
-f.jpg*GERSON*Terror*adm
-IMG_20180304_124023-EFFECTS.jpg*arlenvargas*Educativo*admin
-book_banner.jpg*GERSON*Familiar*foto de la familia
+user.png*Gerson*Entretenimiento*prueba*1

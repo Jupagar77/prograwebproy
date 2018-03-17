@@ -44,7 +44,7 @@
                 <div class="row">
                     <h2>Registro de usuario</h2>
                     <div class="col-sm-12 ">
-                        <form action="../servicios.php" class="contact-edit row "
+                        <form action="../servicios.php" class="contact-edit row"
                               method="post" id="contacto">
                             <input type="hidden" name="metodo" value="agregarUsuario" />
                             <div class="form-group">
