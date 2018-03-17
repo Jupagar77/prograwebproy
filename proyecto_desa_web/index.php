@@ -59,6 +59,7 @@ if (isset($_SESSION['error_msg'])) {
                 </nav>
             </div>
         </header>
+        <main class="centrar_main">
         <?php if (isset($error_message)): ?>
             <div class="errorMsg">
                 <?php echo $error_message ?>
@@ -82,11 +83,11 @@ if (isset($_SESSION['error_msg'])) {
                 <form action="servicios.php" method="post" accept-charset="utf-8">
                     <input type="hidden" name="metodo" value="iniciarSesion" />
                     <div class="form-group has-feedback">
-                        <input type="text" name="email" value="" placeholder="Email o usuario" class="form-control" id="login"
+                        <input type="text" name="email" value="" placeholder="Email o usuario" class="" id="login"
                                maxlength="80" size="30" required="true"> <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" name="password" value="" placeholder="Password" class="form-control"
+                        <input type="password" name="password" value="" placeholder="Password" class=""
                                id="password" size="30" required="true">
                         <span class="glyphicon glyphicon-lock form-control-feedback">
 
@@ -108,6 +109,7 @@ if (isset($_SESSION['error_msg'])) {
 
             </div><!-- /.login-box-body -->
         </div>
+        </main>
         <footer>
             <div class="container">
                 <div class="row">

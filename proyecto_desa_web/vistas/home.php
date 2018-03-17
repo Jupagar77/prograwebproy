@@ -110,7 +110,7 @@ $name = $_SESSION['username'];
             </nav>
 
         </header>
-        <main>
+        <main class="centrar_main">
 
             <?php if (isset($error_message)): ?>
                 <div class="errorMsg">

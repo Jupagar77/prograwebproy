@@ -130,8 +130,9 @@ nav ul li a{
     background-color: #247ba0;
     color: #000000;
 }
-.registrousers{
-    margin-left: 20%;
+.centrar_main{
+     display: flex;
+    justify-content: center;
 }
 .form-control {
     background-color: #ffffff;

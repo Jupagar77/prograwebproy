@@ -40,8 +40,8 @@
                     </nav>
                 </div>
             </header>
-            <main>
-                <div class="row registrousers">
+            <main class="centrar_main">
+                <div class="row">
                     <h2>Registro de usuario</h2>
                     <div class="col-sm-12 ">
                         <form action="../servicios.php" class="contact-edit row "
@@ -79,7 +79,7 @@
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btnregistrar">Registrar</button>
-                                 <a style="; margin-right: 10px" href="index.php" class="btn btn-danger btncancelar">Cancelar</a>
+                                 <a style="; margin-right: 10px" href="../index.php" class="btn btn-danger btncancelar">Cancelar</a>
                             </div>
                             
                         </form>
