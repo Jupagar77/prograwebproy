@@ -52,6 +52,9 @@ if ($data = $_POST) {
                 case "eliminarArchivo":
                     eliminarArchivo($data);
                     break;
+                case "compartirArchivoFinal":
+                    compartirArchivo($data);
+                    break;
                 case "logOut":
                     logout();
                     break;
@@ -111,6 +114,36 @@ function agregarArchivo($data)
     ////}else {
     //    $_SESSION['error_msg'] = "La sesión no está activa.";
     //}
+}
+
+function compartirArchivo($data)
+{
+    //if(isset($_SESSION['username'])){
+    $user_name = $_SESSION['username'];
+    $target_dir = "storage/" . $user_name . '/';
+
+
+    //$nombre = $_FILES["userfile"]["name"];
+    $url = $target_dir . $nombre;
+
+
+    guardar_archivo($GLOBALS['file_archivo'], $GLOBALS['file_archivo_idx'], $GLOBALS['file_archivo_line']
+        , $archivo);
+
+    if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $url)) {
+        //$tam_file2 = $_FILES["userfile"]["size"];
+        //$tam_file = FileSizeConvert($tam_file2);
+        $descripcion = $_POST['descripcion'];
+        $clasificacion = $_POST['categoria'];
+        $autor = $user_name;
+        $categoria = $clasificacion[0];
+        $archivo = new archivo($nombre, $descripcion, $categoria, $autor, $url);
+        // echo 'Tam archivo: ' . $tam_file . $_POST['descripcion'];
+
+    } else {
+        $_SESSION['error_msg'] = "No se guardó el archivo.";
+    }
+    header("Location: " . getBaseUrl() . "vistas/home.php");
 }
 
 function agregarUsuario($data)
@@ -352,7 +385,7 @@ function getFiles_HTML($directorio)
             
            </a> 
       
-           <a href='../servicios.php?metodo=compartirArchivo&ruta_archivo=" . getHost() . "prograwebproy/proyecto_desa_web/storage/" . $nombre_archivo . "&linea=" . $vector[2]
+           <a href='home.php?metodo=compartirArchivo&ruta_archivo=" . getHost() . "prograwebproy/proyecto_desa_web/storage/" . $nombre_archivo . "&linea=" . $vector[2]
                 . "&tam=" . $vector[3] . "'> 
            <img src='../images/compartir.png'>
            </a> 
@@ -415,6 +448,23 @@ function ver_perfil_usuario()
     $tam = (float)$_SESSION['tam_user'];
     //echo $tam;
     return generarHTML_PERFIL(buscar_elemento('../archivos/usuarios.txt', $linea, $tam));
+}
+
+function ver_usuarios_compartir()
+{
+    $usuarios = array();
+    $handle = fopen("../archivos/usuarios.txt", "r");
+    if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+            if($_SESSION['username'] != explode('*',$line)[0])
+                $usuarios[] = (explode('*',$line)[0]);
+        }
+
+        fclose($handle);
+    } else {
+        // error opening the file.
+    }
+    return generarHTML_USUARIOS($usuarios);
 }
 
 function vereditarperfil()

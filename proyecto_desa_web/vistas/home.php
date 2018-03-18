@@ -78,6 +78,12 @@ $name = $_SESSION['username'];
 
             <?php endif; ?>
 
+            <?php if($_GET['metodo'] == 'compartirArchivo'): ?>
+
+                <?php echo ver_usuarios_compartir(); ?>
+
+            <?php endif; ?>
+
         <?php else: ?>
 
             <h2>Sus archivos en un lugar seguro

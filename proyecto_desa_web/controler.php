@@ -216,6 +216,53 @@ function generarHTML_PERFIL($val) {
     return $detalle;
 }
 
+function generarHTML_USUARIOS($usuarios) {
+    $detalle = '<h2>Seleccione usuario
+                <img style="width: 40px; float: right;" src="../images/data.png">
+            </h2>';
+
+    $detalle .= '<table class="tabladetalles">';
+
+    $detalle .= '<tr>';
+    $detalle .= '<th>Nombre de usuario</th>';
+    $detalle .= '<th>Seleccionar</th>';
+    $detalle .= '</tr><form method="get" action="../servicios.php">';
+
+    $detalle .= '
+    
+    <input type="hidden" name="metodo" value="compartirArchivoFinal">
+    <input type="hidden" name="ruta_archivo" value="' . $_GET['ruta_archivo'] . '">
+    <input type="hidden" name="linea" value="' . $_GET['linea'] . '">
+    <input type="hidden" name="tam" value="' . $_GET['tam'] . '">
+    
+    ';
+
+    foreach ($usuarios as $usuario){
+        $detalle .= '<tr>';
+        $detalle .= '<td><b>' . $usuario . '</b> </td>';
+        $detalle .= '<td><b>
+
+                <div class="radio">
+                     <label><input type="radio" id="express" value="' . $usuario . '" name="optradio"></label>
+                </div>
+
+                    </b> </td>';
+        $detalle .= '</tr>';
+    }
+
+    $detalle .= '
+        <tr style="border: darkseagreen solid 1px;
+                    background: darkseagreen;">
+        <td colspan="2">
+        <button type="submit" class="btnregistrar" style="text-align: center">Compartir</button>
+        
+        </td>
+        </tr>
+        </form>
+        </table>';
+    return $detalle;
+}
+
 function generarHTML_PERFIL_EDITAR($val) {
     $vec = explode('*', $val);
     $detalle = '<form action="home.php" class="contact-edit row"
