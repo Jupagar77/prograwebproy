@@ -69,8 +69,4 @@ session_start();
 </footer>
 </div>
 </body>
-<?php
-
-var_dump($_SESSION);
-?>
 </html>

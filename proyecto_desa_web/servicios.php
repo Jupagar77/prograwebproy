@@ -446,31 +446,57 @@ function getFiles_HTML_FILTRO($directorio, $valor_buscado)
     for ($i = 0; $i < count($indices); $i++) {
         $vector = $indices[$i];
         if ($vector[4] === '1' && $vector[1] === $directorio) {
+
+
             $nombre_archivo = $vector[1] . '/' . $vector[0];
+
+            $datos = buscar_elemento('../archivos/archivo.txt', $vector[3], $vector[2]);
+            $vec = explode('*', $datos);
+
+            $fileName = $vector[0];
+            $fileName = explode('/', $fileName);
+            if(count($fileName) > 1){
+                $autor = $fileName[0];
+                $fileName = $fileName[1];
+            }
+            else{
+                $autor = $vec[1];
+                $fileName = $fileName[0];
+            }
+
             $cadena .= '<tr>';
-            $cadena .= '<td>' . $vector[0] . '</td>';
-            $cadena .= "<form action='home.php' method='GET'>";
-            $cadena .= '<td><input type="hidden" name="metodo" value="detallesArchivo" />' .
-                '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
-                . '<input type="hidden" name="linea" value="' . $vector[2] . '"/>'
-                . '<input type="hidden" name="tam" value="' . $vector[3] . '"/>'
-                . '<button type="submit" name="submit">'
-                . '<img src="../images/busqueda.png">Detalles</button></td>';
-            $cadena .= '</form>';
-            $cadena .= "<form action='../servicios.php' method='POST'>";
-            $cadena .= '<td><input type="hidden" name="metodo" value="descargarArchivo" />' .
-                // '<input type="hidden" name="metodo" value="' . $i . '" />' .
-                '<input type="hidden" name="ruta_archivo" value="' . getHost() . 'prograwebproy/proyecto_desa_web/storage/' . $nombre_archivo . '"/>'
-                . '<button type="submit" name="submit"><img src="../images/descargar.png">Descargar</button></td>';
-            $cadena .= '</form>';
-            $cadena .= '<td><button type="submit" name="submit"><img src="../images/compartir.png">Compartir</button></td>';
-            $cadena .= "<form action='../servicios.php' method='POST'>";
-            $cadena .= '<td> <input type="hidden" name="metodo" value="eliminarArchivo" />' .
-                '<input type="hidden" name="ruta_archivo" value="storage/' . $nombre_archivo . '"/>'
-                . '<input type="hidden" name="numero" value="' . $i . '"/>'
-                . '<button type="submit" name="submit"><img src="../images/borrar.png">Borrar</button></td>';
-            $cadena .= '</form>';
+            $cadena .= '<td>' . $fileName . '</td>';
+            $cadena .= '<td>' . $autor . '</td>';
+            $cadena .= '<td>' . $vec[3] . '</td>';
+
+            $cadena .= "
+            <td class='acciones'>
+           <a href='home.php?metodo=detallesArchivo&ruta_archivo=storage/" . $nombre_archivo . "&linea=" . $vector[2]
+                . "&tam=" . $vector[3] . "&autor=" . $autor . "'> 
+           
+            <img src='../images/mp4det.png'>
+           </a> 
+           
+           <a href='../servicios.php?metodo=descargarArchivo&ruta_archivo=" . getHost() . "prograwebproy/proyecto_desa_web/storage/" . $nombre_archivo . "&linea=" . $vector[2]
+                . "&tam=" . $vector[3] . "'> 
+           
+            <img src='../images/descargar.png'>
+           </a> 
+      
+           <a href='home.php?metodo=compartirArchivo&ruta_archivo=" . getHost() . "prograwebproy/proyecto_desa_web/storage/" . $nombre_archivo . "&linea=" . $vector[2]
+                . "&tam=" . $vector[3] . "&autor=" . $autor . "'> 
+           <img src='../images/compartir.png'>
+           </a> 
+      
+           <a href='../servicios.php?metodo=eliminarArchivo&ruta_archivo=storage/" . $nombre_archivo . "&numero=" . $i
+                . "&tam=" . $vector[3] . "'> 
+           <img src='../images/borrar.png'>
+           </a> 
+            </td>
+           ";
+
             $cadena .= '</tr>';
+
         }
     }
     return $cadena;
