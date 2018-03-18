@@ -7,15 +7,21 @@ $file_users = 'archivos/usuarios.txt';
 $file_users_idx = 'archivos/usuarios_idx.txt';
 $file_user_line = 'archivos/line_user.txt';
 $split = '*';
-echo buscar_detalle_perfil('archivos/usuarios.txt', 0, 92);
+//echo buscar_detalle_perfil('archivos/usuarios.txt', 0, 92);
+//echo buscar_elemento('archivos/usuarios.txt', 0, 87);
+$a = 'How are you?';
+$valor='How is';
+if (preg_match('/\b'.$valor.'\b/',$a))
+    echo 'true';
 
+echo substr("abcdef", 0, 1);
 //$vec=obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
 //var_dump(filtrar($vec, 'SON'));
-$a = 'How are you?';
+//$a = 'How are you?';
 
-if (strpos($a, 'a') !== false) {
-    echo 'true';
-}
+//if (strpos($a, 'a') !== false) {
+//    echo 'true';
+//}
 //echo getFiles_HTML('gerson');
 //$vector_usuarios = obtener_vector_archivo($GLOBALS['file_users'], $GLOBALS['split']);
 ///var_dump($vector_usuarios);

@@ -37,7 +37,7 @@ $name = $_SESSION['username'];
     <a class="active" href="home.php">Inicio</a>
     <a href="home.php?metodo=verPerfil">Perfil</a>
     <a href="home.php?metodo=vereditarperfil">Editar Perfil</a>
-    <a href="">Ayuda</a>
+    <a href="ayuda.html" target="_blank">Ayuda</a>
     <a style="float: right;" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
 </div>
 
@@ -59,10 +59,7 @@ $name = $_SESSION['username'];
             <?php
             if (isset($_POST['metodo'])) {
 
-                if ($_POST['metodo'] == 'vereditarperfil') {
-                    echo vereditarperfil();
-                    //echo 'Hola mindo';
-                } else if ($_POST['metodo'] == 'editarusuario') {
+                 if ($_POST['metodo'] == 'editarusuario') {
                     echo editarusuario($_POST);
                     // echo 'Editar Usuario';
                 }
@@ -72,7 +69,16 @@ $name = $_SESSION['username'];
 
         <?php if(isset($_GET['metodo'])): ?>
 
-            <?php if($_GET['metodo'] == 'verPerfil'): ?>
+            <?php
+        if ($_GET['metodo'] == 'vereditarperfil') {
+            echo vereditarperfil();
+            //echo 'Hola mindo';
+        }
+            ?>
+            <?php
+            if($_GET['metodo'] == 'verPerfil'):
+
+                ?>
 
                 <?php echo ver_perfil_usuario(); ?>
 
@@ -86,7 +92,7 @@ $name = $_SESSION['username'];
 
         <?php else: ?>
 
-            <h2>Sus archivos en un lugar seguro
+            <h2>Sus archivos en un lugar seguro.
                 <img style="width: 40px; float: right;" src="../images/mp4.png">
             </h2>
 
@@ -195,7 +201,8 @@ $name = $_SESSION['username'];
     if (isset($_GET['metodo'])) {
         if ($_GET['metodo'] == 'verPerfil') {
             echo ver_perfil_usuario();
-        } else if ($_GET['metodo'] == 'detallesArchivo') {
+        }
+        else if ($_GET['metodo'] == 'detallesArchivo') {
             echo detallesArchivo($data);
         }
     }
@@ -214,9 +221,9 @@ $name = $_SESSION['username'];
             </div>
             <div class="col-sm-4 pcenter">
                 <p class="font-weight-bold float-center">
-                    <a class="btn btn-link" href="#">Inicio</a>
+                    <a class="btn btn-link" href="../index.php">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="btn btn-link" href="#">Ayuda</a>
+                    <a class="btn btn-link" href="ayuda.html" target="_blank">Ayuda</a>
                     <i class="mr-1 ml-1">|</i>
                     <a class="btn btn-link" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
                 </p>

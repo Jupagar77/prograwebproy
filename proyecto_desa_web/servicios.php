@@ -65,24 +65,29 @@ if ($data = $_POST) {
 
 function iniciarSesion($data)
 {
+
     $_SESSION['login'] = false;
     $_SESSION['login_id'] = NULL;
     //$access_log = fopen($filename, "r");
     if (isset($data['email']) && isset($data['password'])) {
+
+
         $vector_idx_usuarios = obtener_vector_archivo_idx($GLOBALS['file_users_idx'], $GLOBALS['split']);
-        if (login($data['email'], $data["password"], $vector_idx_usuarios)) {
 
-            $_SESSION['login'] = true;
-            $_SESSION['user_email'] = $data['email'];
-            $_SESSION['login_id'] = $data['email'];
+          if (login($data['email'], $data["password"], $vector_idx_usuarios)) {
 
-            $_SESSION['success_msg'] = "Inicio de sesion correcto.";
+              $_SESSION['login'] = true;
+              $_SESSION['user_email'] = $data['email'];
+              $_SESSION['login_id'] = $data['email'];
 
-            header("Location: " . getBaseUrl() . "vistas/home.php");
-        } else {
-            $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
-            header("Location: " . getBaseUrl() . "index.php");
-        }
+              $_SESSION['success_msg'] = "Inicio de sesion correcto.";
+
+              header("Location: " . getBaseUrl() . "vistas/home.php");
+          }/*
+          else {
+              $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
+              header("Location: " . getBaseUrl() . "index.php");
+          }*/
     } else {
         $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
         // header("Location: " . getBaseUrl() . "index.php");
@@ -96,6 +101,7 @@ function agregarArchivo($data)
     $target_dir = "storage/" . $user_name . '/';
     $nombre = $_FILES["userfile"]["name"];
     $url = $target_dir . $nombre;
+    if(preg_match("/\.(mp4)$/", $nombre)){
     if (move_uploaded_file($_FILES["userfile"]["tmp_name"], $url)) {
         //$tam_file2 = $_FILES["userfile"]["size"];
         //$tam_file = FileSizeConvert($tam_file2);
@@ -109,6 +115,9 @@ function agregarArchivo($data)
             , $archivo);
     } else {
         $_SESSION['error_msg'] = "No se guardó el archivo.";
+    }
+    }else {
+        $_SESSION['error_msg'] = "El servidor solo acepta archivos .mp4.";
     }
     header("Location: " . getBaseUrl() . "vistas/home.php");
     ////}else {

@@ -105,10 +105,12 @@ function validar_usuario($usuario, $passwd, $vector_usuarios) {
         $vec = $vector_usuarios[$i];
         if (($usuario === $vec[0] || $usuario === $vec[1]) && $vec[4] == '1') {
             $usuario2 = buscar_elemento('archivos/usuarios.txt', $vec[3], $vec[2]);
-            // echo $usuario2;
+
+            //var_dump($usuario2);
             $vec2 = explode('*', $usuario2);
 
             if ($vec2[4] === $passwd) {
+
                 //echo 'Linea '.$vec[3].' '.$vec[2];
                 $_SESSION['linea_user'] = $vec[3];
                 $_SESSION['tam_user'] = $vec[2];
@@ -174,12 +176,10 @@ function obtener_vector_archivo_idx($file, $split) {
 }
 
 function buscar_elemento($fichero, $n_linea, $tam) {
-    //echo $n_linea . '- ' . $tam;
     $fp = fopen($fichero, 'r');
     fseek($fp, $n_linea);
     $data = fgets($fp, $tam);
     fclose($fp);
-    // echo $fichero.' '. $n_linea. '  '. $tam. ' '.$data;
     return $data;
 }
 
@@ -326,18 +326,23 @@ function reescribe_indices_archivo($file, $vector) {
 }
 
 function filtrar($vector, $clave) {
-    $vec_filtro = [];
+    $vic_filter = [];
     $count = 0;
     for ($i = 0; $i < count($vector); $i++) {
         $valor = $vector[$i];
-        // echo $valor[0].' '.$clave;
-        strpos($valor[0] . '', $clave) ? 'Si' : 'No';
+
+        /*if (preg_match('/\b'.$valor[0].'\b/',$clave))
+         echo 'si';
+        echo $valor[0].'   '.$clave.'<br />';*/
+        //strpos($valor[0] . '', $clave) ? 'Si' : 'No';
+
         if (strpos($valor[0], $clave)) {
-            echo 'entra';
-            $vec_filtro[$count] = $valor;
+          //  if (preg_match('/\b'.$valor[0].'\b/',$clave)){
+           // echo 'entra';
+            $vic_filter[$count] = $valor;
             $count++;
         }
     }
 
-    return $vec_filtro;
+    return $vic_filter;
 }
