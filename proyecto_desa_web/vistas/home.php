@@ -59,10 +59,7 @@ $name = $_SESSION['username'];
             <?php
             if (isset($_POST['metodo'])) {
 
-                if ($_POST['metodo'] == 'vereditarperfil') {
-                    echo vereditarperfil();
-                    //echo 'Hola mindo';
-                } else if ($_POST['metodo'] == 'editarusuario') {
+                 if ($_POST['metodo'] == 'editarusuario') {
                     echo editarusuario($_POST);
                     // echo 'Editar Usuario';
                 }
@@ -72,7 +69,16 @@ $name = $_SESSION['username'];
 
         <?php if(isset($_GET['metodo'])): ?>
 
-            <?php if($_GET['metodo'] == 'verPerfil'): ?>
+            <?php
+        if ($_GET['metodo'] == 'vereditarperfil') {
+            echo vereditarperfil();
+            //echo 'Hola mindo';
+        }
+            ?>
+            <?php
+            if($_GET['metodo'] == 'verPerfil'):
+
+                ?>
 
                 <?php echo ver_perfil_usuario(); ?>
 
@@ -80,7 +86,7 @@ $name = $_SESSION['username'];
 
         <?php else: ?>
 
-            <h2>Sus archivos en un lugar seguro
+            <h2>Sus archivos en un lugar seguro.
                 <img style="width: 40px; float: right;" src="../images/mp4.png">
             </h2>
 
@@ -189,7 +195,8 @@ $name = $_SESSION['username'];
     if (isset($_GET['metodo'])) {
         if ($_GET['metodo'] == 'verPerfil') {
             echo ver_perfil_usuario();
-        } else if ($_GET['metodo'] == 'detallesArchivo') {
+        }
+        else if ($_GET['metodo'] == 'detallesArchivo') {
             echo detallesArchivo($data);
         }
     }

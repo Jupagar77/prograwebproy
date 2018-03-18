@@ -62,24 +62,29 @@ if ($data = $_POST) {
 
 function iniciarSesion($data)
 {
+
     $_SESSION['login'] = false;
     $_SESSION['login_id'] = NULL;
     //$access_log = fopen($filename, "r");
     if (isset($data['email']) && isset($data['password'])) {
+
+
         $vector_idx_usuarios = obtener_vector_archivo_idx($GLOBALS['file_users_idx'], $GLOBALS['split']);
-        if (login($data['email'], $data["password"], $vector_idx_usuarios)) {
 
-            $_SESSION['login'] = true;
-            $_SESSION['user_email'] = $data['email'];
-            $_SESSION['login_id'] = $data['email'];
+          if (login($data['email'], $data["password"], $vector_idx_usuarios)) {
 
-            $_SESSION['success_msg'] = "Inicio de sesion correcto.";
+              $_SESSION['login'] = true;
+              $_SESSION['user_email'] = $data['email'];
+              $_SESSION['login_id'] = $data['email'];
 
-            header("Location: " . getBaseUrl() . "vistas/home.php");
-        } else {
-            $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
-            header("Location: " . getBaseUrl() . "index.php");
-        }
+              $_SESSION['success_msg'] = "Inicio de sesion correcto.";
+
+              header("Location: " . getBaseUrl() . "vistas/home.php");
+          }/*
+          else {
+              $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
+              header("Location: " . getBaseUrl() . "index.php");
+          }*/
     } else {
         $_SESSION['error_msg'] = "Usuario o password incorrectos, intente de nuevo.";
         // header("Location: " . getBaseUrl() . "index.php");

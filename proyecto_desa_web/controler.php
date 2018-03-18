@@ -105,10 +105,12 @@ function validar_usuario($usuario, $passwd, $vector_usuarios) {
         $vec = $vector_usuarios[$i];
         if (($usuario === $vec[0] || $usuario === $vec[1]) && $vec[4] == '1') {
             $usuario2 = buscar_elemento('archivos/usuarios.txt', $vec[3], $vec[2]);
-            // echo $usuario2;
+
+            //var_dump($usuario2);
             $vec2 = explode('*', $usuario2);
 
             if ($vec2[4] === $passwd) {
+
                 //echo 'Linea '.$vec[3].' '.$vec[2];
                 $_SESSION['linea_user'] = $vec[3];
                 $_SESSION['tam_user'] = $vec[2];
@@ -174,12 +176,10 @@ function obtener_vector_archivo_idx($file, $split) {
 }
 
 function buscar_elemento($fichero, $n_linea, $tam) {
-    //echo $n_linea . '- ' . $tam;
     $fp = fopen($fichero, 'r');
     fseek($fp, $n_linea);
     $data = fgets($fp, $tam);
     fclose($fp);
-    // echo $fichero.' '. $n_linea. '  '. $tam. ' '.$data;
     return $data;
 }
 
