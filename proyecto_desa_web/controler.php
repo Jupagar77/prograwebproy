@@ -174,7 +174,6 @@ function obtener_vector_archivo_idx($file, $split) {
 }
 
 function buscar_elemento($fichero, $n_linea, $tam) {
-
     //echo $n_linea . '- ' . $tam;
     $fp = fopen($fichero, 'r');
     fseek($fp, $n_linea);
@@ -191,14 +190,17 @@ function buscar_detalle_perfil($file, $linea, $tam) {
 
 function generarHTML_PERFIL($val) {
     $vec = explode('*', $val);
-    $detalle = '<table class="tabladetalles">';
-    $detalle .= '<tr><th colspan="5">' . 'Detalles del usuario: ' . '</th></tr>';
+    $detalle = '<h2>Perfil de Usuario
+                <img style="width: 40px; float: right;" src="../images/user.png">
+            </h2>';
+    $detalle .= '<table class="tabladetalles">';
+    $detalle .= '<tr></tr>';
     $detalle .= '<tr>';
-    $detalle .= '<th>Nombre</th>';
-    $detalle .= '<th>Num Trabajo </th>';
-    $detalle .= '<th>Mobile</th>';
-    $detalle .= '<th>Email</th>';
-    $detalle .= '<th>Dirección</th>';
+    $detalle .= '<th>Nombre de usuario</th>';
+    $detalle .= '<th>Teléfono del trabajo </th>';
+    $detalle .= '<th>Teléfono móvil</th>';
+    $detalle .= '<th>Dirección electrónica</th>';
+    $detalle .= '<th>Dirección postal</th>';
     $detalle .= '</tr>';
 
     $detalle .= '<tr>';
