@@ -124,7 +124,26 @@ nav ul li a {
 .centrar_main_login {
     margin-top: 5%;
 }
-
+.centrar_main_ayuda{
+    margin-bottom: 160px;
+}
+.centrar_main_ayuda div{
+    text-align: center;
+}
+.centrar_main_ayuda article{
+    position: relative;
+    border-radius: 100px 8px 80px 0px;
+    -moz-border-radius: 80px 8px 80px 0px;
+    -webkit-border-radius: 100px 8px 100px 0px;
+    border: chocolate dotted 10px;
+    box-shadow: 0 0 0 2px #333333 ;
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    text-align:justify;
+    padding: 20px;
+}
 .form-control {
     background-color: #ffffff;
     background-image: none;

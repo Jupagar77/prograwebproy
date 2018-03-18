@@ -37,8 +37,8 @@ if (isset($_SESSION['error_msg'])) {
 <div class="topnav">
     <a class="active" href="#">Inicio</a>
     <a href="vistas/agregar.php">Registrarse</a>
-    <a href="">Contactenos</a>
-    <a href="">Sobre nosotros</a>
+    <a href="vistas/ayuda.html">Contactenos</a>
+    <a href="vistas/ayuda.html">Ayuda</a>
 </div>
 
 <?php if (isset($error_message)): ?>
@@ -102,9 +102,9 @@ if (isset($_SESSION['error_msg'])) {
                 <p class="font-weight-bold float-center">
                     <a class="" href="vistas/agregar.php">Registrarse</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="#">Contactenos</a>
+                    <a class="" href="vistas/ayuda.html" target="_blank">Ayuda</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="#">Sobre nosotros</a>
+                    <a class="" href="vistas/about_us.html" target="_blank">Sobre nosotros</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">

@@ -14,8 +14,8 @@
 <div class="topnav">
     <a class="active" href="../index.php">Inicio</a>
     <a href="agregar.php">Registrarse</a>
-    <a href="">Contactenos</a>
-    <a href="">Sobre nosotros</a>
+    <a href="about_us.html" target="_blank">Contactenos</a>
+    <a href="about_us.html" target="_blank">Sobre nosotros</a>
 </div>
 
 <main class="centrar_main">
@@ -81,9 +81,9 @@
                 <p class="font-weight-bold float-center">
                     <a class="" href="vistas/agregar.php">Registrarse</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="#">Contactenos</a>
+                    <a class="" href="about_us.html" target="_blank">Contactenos</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="#">Sobre nosotros</a>
+                    <a class="" href="about_us.html" target="_blank">Sobre nosotros</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">

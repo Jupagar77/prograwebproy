@@ -37,7 +37,7 @@ $name = $_SESSION['username'];
     <a class="active" href="home.php">Inicio</a>
     <a href="home.php?metodo=verPerfil">Perfil</a>
     <a href="home.php?metodo=vereditarperfil">Editar Perfil</a>
-    <a href="">Ayuda</a>
+    <a href="ayuda.html" target="_blank">Ayuda</a>
     <a style="float: right;" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
 </div>
 
@@ -215,9 +215,9 @@ $name = $_SESSION['username'];
             </div>
             <div class="col-sm-4 pcenter">
                 <p class="font-weight-bold float-center">
-                    <a class="btn btn-link" href="#">Inicio</a>
+                    <a class="btn btn-link" href="../index.php">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="btn btn-link" href="#">Ayuda</a>
+                    <a class="btn btn-link" href="ayuda.html" target="_blank">Ayuda</a>
                     <i class="mr-1 ml-1">|</i>
                     <a class="btn btn-link" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
                 </p>
