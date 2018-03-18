@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,13 +13,6 @@
   <link rel="shortcut icon" type="image/png" href="../images/mp4.png"/>
 </head>
 <body>
-
-<div class="topnav">
-  <a class="active" href="../index.php">Inicio</a>
-  <a href="agregar.php">Registrarse</a>
-  <a href="about_us.html">Contactenos</a>
-  <a href="about_us.html">Sobre nosotros</a>
-</div>
 
 <main class="centrar_main_home centrar_main_ayuda">
   <div>
@@ -217,11 +213,11 @@
       </div>
       <div class="col-sm-4 pcenter">
         <p class="font-weight-bold float-center">
-          <a class="btn btn-link" href="../index.php">Inicio</a>
-          <i class="mr-1 ml-1">|</i>
-          <a class="btn btn-link" href="#">Ayuda</a>
-          <i class="mr-1 ml-1">|</i>
-          <a class="btn btn-link" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
+            <a class="btn btn-link" href="../index.php">Inicio</a>
+            <i class="mr-1 ml-1">|</i>
+            <a class="btn btn-link" href="about_us.php">Contactenos</a>
+            <i class="mr-1 ml-1">|</i>
+            <a class="btn btn-link" href="ayuda.php">Ayuda</a>
         </p>
       </div>
       <div class="col-sm-4 pright">

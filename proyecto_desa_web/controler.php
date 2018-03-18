@@ -110,8 +110,6 @@ function validar_usuario($usuario, $passwd, $vector_usuarios) {
             $vec2 = explode('*', $usuario2);
 
             if ($vec2[4] === $passwd) {
-
-                //echo 'Linea '.$vec[3].' '.$vec[2];
                 $_SESSION['linea_user'] = $vec[3];
                 $_SESSION['tam_user'] = $vec[2];
                 $_SESSION['username'] = $vec[1];
@@ -226,7 +224,9 @@ function generarHTML_USUARIOS($usuarios) {
     $detalle .= '<tr>';
     $detalle .= '<th>Nombre de usuario</th>';
     $detalle .= '<th>Seleccionar</th>';
-    $detalle .= '</tr><form method="get" action="../servicios.php">';
+    $detalle .= '</tr>
+     
+    <form method="get" action="../servicios.php">';
 
     $detalle .= '
     
@@ -238,16 +238,18 @@ function generarHTML_USUARIOS($usuarios) {
     ';
 
     foreach ($usuarios as $usuario){
-        $detalle .= '<tr>';
-        $detalle .= '<td><b>' . $usuario . '</b> </td>';
-        $detalle .= '<td><b>
+        if($usuario != $_GET['autor']){
+            $detalle .= '<tr>';
+            $detalle .= '<td><b>' . $usuario . '</b> </td>';
+            $detalle .= '<td><b>
 
                 <div class="radio">
                      <label><input type="radio" id="express" value="' . $usuario . '" name="optradio"></label>
                 </div>
 
                     </b> </td>';
-        $detalle .= '</tr>';
+            $detalle .= '</tr>';
+        }
     }
 
     $detalle .= '
@@ -265,43 +267,52 @@ function generarHTML_USUARIOS($usuarios) {
 
 function generarHTML_PERFIL_EDITAR($val) {
     $vec = explode('*', $val);
-    $detalle = '<form action="home.php" class="contact-edit row"
-                              method="post" id="contacto">';
-    $detalle .= '<table class="tabladetalles">';
-    $detalle .= '<tr><th colspan="6">' . 'Editar usuario: ' . '</th></tr>';
-    $detalle .= '<tr>';
-    $detalle .= '<th>Nombre Usuario</th>';
-    $detalle .= '<th>Num Trabajo </th>';
-    $detalle .= '<th>Mobile</th>';
-    $detalle .= '<th>Email</th>';
-    $detalle .= '<th>Password</th>';
-    $detalle .= '<th>Dirección</th>';
-    $detalle .= '</tr>';
+    $detalle = '<h2>Editar perfil
+                <img style="width: 40px; float: right;" src="../images/userEdit.png">
+                </h2>';
 
-    $detalle .= '<tr>';
-    $detalle .= '<td><input maxlength="30" type="text" class="form-control" name="nombre" required id="nombre" disabled value="' . $vec[0] . '"/> </td>';
-    $detalle .= '<td> <input maxlength="30" type="text" class="form-control" name="trabajo" id="trabajo" required value="' . $vec[1] . '"/></td>';
-    $detalle .= '<td><input maxlength="30" type="text" class="form-control" name="celular" id="celular" required value="' . $vec[2] . '"> </td>';
-    $detalle .= '<td><input maxlength="30" type="email" class="form-control" name="email" required id="email" value="' . $vec[3] . '"></td>';
 
-    $detalle .= '<td><input maxlength="30" type="password" class="form-control" name="password" id="password" required> </td>';
-    $detalle .= '<td><input  type="text" class="form-control" name="direccion" required id="direccion" value="' . $vec[5] . '"></td>';
-    $detalle .= '</tr>';
-    $detalle .= '<tr>';
+    $detalle .= '<div style="width:400px;" class="editar-perfil">
+            <form action="home.php" class="contact-edit row"
+                  method="post" id="contacto">
+                <input type="hidden" name="metodo" value="editarusuario" />
+                <div class="form-group">
+                    <label for="nombre">Nombre de usuario</label>
+                    <input style="background: gainsboro" maxlength="30" type="text" class="form-control" name="nombre" disabled value="' . $vec[0]. '" required id="nombre">
+                </div>
 
-    $detalle .= '<td colspan="4">';
-    $detalle .= '<input type="hidden" name="metodo" value="editarusuario" />';
-    $detalle .= '</td>';
-    $detalle .= '<td>';
-    $detalle .= '<a style="margin-right: 10px" href="home.php" class="btn btn-danger btncancelar">Cancelar</a>';
-    $detalle .= '</td>';
-    $detalle .= '<td>';
-    $detalle .= '<button type="submit" class="btn btn-primary btnregistrar">Editar</button>';
-    $detalle .= '</td>';
-    $detalle .= '</tr>';
-    $detalle .= '</table>';
+                <div class="form-group">
+                    <label for="email">Dirección electrónica</label>
+                    <input maxlength="30" type="email" class="form-control" value="' . $vec[3] .'" name="email" required id="email">
+                </div>
 
-    $detalle .= '</form>';
+                <div class="form-group">
+                    <label for="password">Contrasena</label>
+                    <input maxlength="30" type="password" class="form-control" value="' . $vec[4] .'" name="password" id="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="trabajo">Teléfono del trabajo</label>
+                    <input maxlength="30" type="text" class="form-control" value="' . $vec[1] .'" name="trabajo" id="trabajo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="celular">Teléfono móvil</label>
+                    <input maxlength="30" type="text" class="form-control" value="' . $vec[2] .'" name="celular" id="celular" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección postal</label><br/>
+                    <input maxlength="30" name="direccion" id="direccion" value="' . $vec[5] .'" required>
+                </div>
+
+                <div class="form-group">
+                    <button style="text-align: center; width: 100%" type="submit" class="btn btn-primary btnregistrar">Editar</button>
+                </div>
+
+            </form>
+        </div>';
+
     return $detalle;
 }
 

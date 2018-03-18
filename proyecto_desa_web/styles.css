@@ -293,3 +293,7 @@ footer .pcenter a {
 .blue    { background-color: #3b8ec2; }
 
 .blue select    { color: #fff; }
+
+.editar-perfil form input{
+    width: 100% !important;
+}

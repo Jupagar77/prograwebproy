@@ -3,6 +3,7 @@ include("../servicios.php");
 
 if (!isset($_SESSION['login'])) {
     header("Location: " . getBaseUrl() . "../index.php");
+    exit();
 }
 
 $success_message = NULL;
@@ -37,7 +38,6 @@ $name = $_SESSION['username'];
     <a class="active" href="home.php">Inicio</a>
     <a href="home.php?metodo=verPerfil">Perfil</a>
     <a href="home.php?metodo=vereditarperfil">Editar Perfil</a>
-    <a href="ayuda.html" target="_blank">Ayuda</a>
     <a style="float: right;" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
 </div>
 
@@ -69,16 +69,13 @@ $name = $_SESSION['username'];
 
         <?php if(isset($_GET['metodo'])): ?>
 
-            <?php
-        if ($_GET['metodo'] == 'vereditarperfil') {
-            echo vereditarperfil();
-            //echo 'Hola mindo';
-        }
-            ?>
-            <?php
-            if($_GET['metodo'] == 'verPerfil'):
+            <?php if ($_GET['metodo'] == 'vereditarperfil'):?>
 
-                ?>
+                <?php echo vereditarperfil(); ?>
+
+            <?php endif; ?>
+
+            <?php if($_GET['metodo'] == 'verPerfil'): ?>
 
                 <?php echo ver_perfil_usuario(); ?>
 
@@ -87,6 +84,12 @@ $name = $_SESSION['username'];
             <?php if($_GET['metodo'] == 'compartirArchivo'): ?>
 
                 <?php echo ver_usuarios_compartir(); ?>
+
+            <?php endif; ?>
+
+            <?php if($_GET['metodo'] == 'detallesArchivo'): ?>
+
+                <?php echo detallesArchivo($_GET); ?>
 
             <?php endif; ?>
 
@@ -113,15 +116,6 @@ $name = $_SESSION['username'];
                     </th>
                     <th>
                         Descripcion
-                    </th>
-                    <th>
-                        Categoria
-                    </th>
-                    <th>
-                        Peso
-                    </th>
-                    <th>
-                        Fecha
                     </th>
                     <th>
                         Acciones
@@ -196,19 +190,6 @@ $name = $_SESSION['username'];
 
 </main>
 
-<div>
-    <?php
-    if (isset($_GET['metodo'])) {
-        if ($_GET['metodo'] == 'verPerfil') {
-            echo ver_perfil_usuario();
-        }
-        else if ($_GET['metodo'] == 'detallesArchivo') {
-            echo detallesArchivo($data);
-        }
-    }
-    ?>
-</div>
-
 <footer>
     <div class="container">
         <div class="row">
@@ -223,9 +204,9 @@ $name = $_SESSION['username'];
                 <p class="font-weight-bold float-center">
                     <a class="btn btn-link" href="../index.php">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="btn btn-link" href="ayuda.html" target="_blank">Ayuda</a>
+                    <a class="btn btn-link" href="about_us.php">Contactenos</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="btn btn-link" href="../servicios.php?metodo=logOut">Cerrar Sesión</a>
+                    <a class="btn btn-link" href="ayuda.php">Ayuda</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">

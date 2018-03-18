@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,10 +15,10 @@
 <body>
 
 <div class="topnav">
-    <a class="active" href="../index.php">Inicio</a>
-    <a href="agregar.php">Registrarse</a>
-    <a href="about_us.html" target="_blank">Contactenos</a>
-    <a href="about_us.html" target="_blank">Sobre nosotros</a>
+    <a href="../index.php">Inicio</a>
+    <a class="active" href="agregar.php">Registrarse</a>
+    <a href="about_us.php">Contactenos</a>
+    <a href="ayuda.php">Ayuda</a>
 </div>
 
 <main class="centrar_main">
@@ -79,11 +82,11 @@
             </div>
             <div class="col-sm-4 pcenter">
                 <p class="font-weight-bold float-center">
-                    <a class="" href="vistas/agregar.php">Registrarse</a>
+                    <a class="btn btn-link" href="../index.php">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="about_us.html" target="_blank">Contactenos</a>
+                    <a class="btn btn-link" href="about_us.php">Contactenos</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="about_us.html" target="_blank">Sobre nosotros</a>
+                    <a class="btn btn-link" href="ayuda.php">Ayuda</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">

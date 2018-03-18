@@ -1,10 +1,12 @@
 <?php
 include("servicios.php");
 
-//session_start();
 
 if (isset($_SESSION['login'])) {
-    header("Location: " . getBaseUrl() . "vistas/home.php");
+    if($_SESSION['login']){
+        header("Location: " . getBaseUrl() . "vistas/home.php");
+        exit();
+    }
 }
 
 $success_message = NULL;
@@ -37,8 +39,8 @@ if (isset($_SESSION['error_msg'])) {
 <div class="topnav">
     <a class="active" href="#">Inicio</a>
     <a href="vistas/agregar.php">Registrarse</a>
-    <a href="vistas/ayuda.html">Contactenos</a>
-    <a href="vistas/ayuda.html">Ayuda</a>
+    <a href="vistas/about_us.php">Contactenos</a>
+    <a href="vistas/ayuda.php">Ayuda</a>
 </div>
 
 <?php if (isset($error_message)): ?>
@@ -100,11 +102,11 @@ if (isset($_SESSION['error_msg'])) {
             </div>
             <div class="col-sm-4 pcenter">
                 <p class="font-weight-bold float-center">
-                    <a class="" href="vistas/agregar.php">Registrarse</a>
+                    <a class="btn btn-link" href="index.php">Inicio</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="vistas/ayuda.html" target="_blank">Ayuda</a>
+                    <a class="btn btn-link" href="vistas/about_us.php">Contactenos</a>
                     <i class="mr-1 ml-1">|</i>
-                    <a class="" href="vistas/about_us.html" target="_blank">Sobre nosotros</a>
+                    <a class="btn btn-link" href="vistas/ayuda.php">Ayuda</a>
                 </p>
             </div>
             <div class="col-sm-4 pright">
