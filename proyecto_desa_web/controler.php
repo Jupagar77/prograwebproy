@@ -279,18 +279,23 @@ function reescribe_indices_archivo($file, $vector) {
 }
 
 function filtrar($vector, $clave) {
-    $vec_filtro = [];
+    $vic_filter = [];
     $count = 0;
     for ($i = 0; $i < count($vector); $i++) {
         $valor = $vector[$i];
-        // echo $valor[0].' '.$clave;
-        strpos($valor[0] . '', $clave) ? 'Si' : 'No';
+
+        /*if (preg_match('/\b'.$valor[0].'\b/',$clave))
+         echo 'si';
+        echo $valor[0].'   '.$clave.'<br />';*/
+        //strpos($valor[0] . '', $clave) ? 'Si' : 'No';
+
         if (strpos($valor[0], $clave)) {
-            echo 'entra';
-            $vec_filtro[$count] = $valor;
+          //  if (preg_match('/\b'.$valor[0].'\b/',$clave)){
+           // echo 'entra';
+            $vic_filter[$count] = $valor;
             $count++;
         }
     }
 
-    return $vec_filtro;
+    return $vic_filter;
 }
